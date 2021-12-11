@@ -42,7 +42,12 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
     
 @app.route('/')
 def home():
-    return "Hello world"
+    return "We are onlinee"
+
+@app.route('/get_image')
+def get_image():
+    filename = "martin.jpeg"
+    return send_file(filename, mimetype='image/jpeg')
 
 
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
