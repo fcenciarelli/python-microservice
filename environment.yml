@@ -1,0 +1,7 @@
+name: python-microservice #Environment name
+dependencies:
+  - python>=3.5
+  - anaconda
+  - pip
+  - pip:
+    - -r requirements.txt
