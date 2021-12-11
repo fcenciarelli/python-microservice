@@ -6,8 +6,8 @@ from urllib.request import Request, urlopen
 import requests
 import bs4 as bs4
 import requests
-import pandas as pd
-import numpy as np
+#import pandas as pd
+#import numpy as np
 import youtube_dl
 from flask import send_file, send_from_directory, safe_join, abort
 from pydub import AudioSegment
@@ -23,7 +23,7 @@ from google.cloud import storage
 # Declearing that the app is using Flask
 app = Flask(__name__)
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/Cloud_storage/ServiceKey_GoogleCloud.json'
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/Cloud_storage/ServiceKey_GoogleCloud.json'
 
 storage_client = storage.Client()
 
