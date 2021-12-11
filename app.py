@@ -325,6 +325,5 @@ def transcript_analysis_from_sentence():
 if __name__ == '__main__':
     #you can execute all the functions written here
     #transcript_analysis_from_sentence()
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run()
 
