@@ -324,6 +324,6 @@ def transcript_analysis_from_sentence():
 #main function executed when the program starts
 if __name__ == '__main__':
     #you can execute all the functions written here
-    transcript_analysis_from_sentence()
+    #transcript_analysis_from_sentence()
     app.run()
 
