@@ -39,9 +39,14 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
         print(e)
         return False
 
+    
+@app.route('/')
+def home():
+    return "Hello world"
+
 
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
-@app.route('/', methods=['POST'])  #sending a post request to '/' the function getdata is called
+@app.route('/download', methods=['POST'])  #sending a post request to '/' the function getdata is called
 def getdata():
     print("The header is: ")
     print(request.headers)  #this is just to see the details of the request
