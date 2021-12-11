@@ -61,15 +61,13 @@ def getdata():
     url = json.dumps(request.get_json()).split('"')[3]
 
     video_id = url.split("v=")[1]
-
     #print(video_id)
     srt = retrieve_transcripts_youtube(video_id)
-    transcript_analysis(srt)
+    print(srt)
+    #transcript_analysis(srt)
+    #file_path = "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/finals.mp4"
 
-    file_path = "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/finals.mp4"
-
-
-    upload_to_bucket('finals.mp4', file_path, "data_bucket_video_swag" )
+    #upload_to_bucket('finals.mp4', file_path, "data_bucket_video_swag" )
 
     # video_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4")
 
