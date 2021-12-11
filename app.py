@@ -325,5 +325,5 @@ def transcript_analysis_from_sentence():
 if __name__ == '__main__':
     #you can execute all the functions written here
     transcript_analysis_from_sentence()
-    #app.run(debug=True, host='0.0.0.0')
+    app.run()
 
