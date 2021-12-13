@@ -24,7 +24,7 @@ from google.cloud import storage
 app = Flask(__name__)
 
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/ServiceKey_GoogleCloud.json'
-
+#CHANGED THE VARIABLE
 def upload_to_bucket(blob_name, file_path, bucket_name):
     try:
         bucket = storage_client.get_bucket(bucket_name)
