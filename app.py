@@ -29,7 +29,6 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/ServiceKey_GoogleCloud.json'
 def upload_to_bucket(blob_name, file_path, bucket_name):
     storage_client = storage.Client()
     try:
-
         bucket = storage_client.get_bucket(bucket_name)
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(file_path)
@@ -171,12 +170,12 @@ def transcript_analysis(srt):
     l = 0  #counter to set the first video of the sequence
 
     # 2 loops: 1 to concat words in a sentence the other to concat sentences into a single video
-    for i in range(len(srt)):
+    for i in range(len(srt)): # "I love dogs" "5"
         sentence = json.dumps(
-            srt[i]).split('"')[3]  #processing to select sentence from srt
+            srt[i]).split('"')[3]  #processing to select sentence from srt #{I, love, gdogs} 3 words
         word_list = sentence.split()  #split sentence in words
         duration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]
-                    ).split("}")[0]  #select duration from srt
+                    ).split("}")[0]  #select duration from srt 
         fulltext = sentence + duration
         duration = float(duration)  #make duration become number from string
         duration_per_word = duration / len(
@@ -187,14 +186,14 @@ def transcript_analysis(srt):
         no_video_words = []
 
         size = (320, 240)  #standard size used in most video
-        duration_blank = duration_per_word  #the blank video should last for a word
+        duration_blank = duration_per_word  #the blank video should last for a word 
 
         j = 0  #counter to set the first video of the sequence
-        print(word_list)
+        print(word_list) # I , love , dogs
         # loop going through each word of a sentence
         for word in word_list:
             print(word)
-            videoname = word + ".mp4"  #get the filename
+            videoname = word + ".mp4"  #get the filename 
             pathtovideo = Path("/Users/francescocenciarelli/Video_scraped/" +
                                videoname)
             pathtovideo_string = str(pathtovideo)
@@ -207,18 +206,18 @@ def transcript_analysis(srt):
                 )  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
-                multiplier = clip_dur / duration_blank  #scale it
+                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 clip = clip.speedx(multiplier)
                 # else make the video blank calling the color_clip function
             else:
                 no_video_words.append(videoname)
                 color_clip(size, duration_blank)
                 clip = VideoFileClip(
-                    "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/color.mp4"
+                    "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/color.mp4" # TO CHANGE
                 )
 
             if j == 0:
-                final_clip = clip
+                final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
                 [final_clip, clip])  #concatenate the clips into a single clip
             j = j + 1
@@ -329,4 +328,8 @@ if __name__ == '__main__':
     #you can execute all the functions written here
     #transcript_analysis_from_sentence()
     app.run()
+
+
+
+array_article = []
 
