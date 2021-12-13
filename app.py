@@ -63,6 +63,8 @@ def getdata():
 
     srt = retrieve_transcripts_youtube(video_id)
 
+    make_the_video(srt)
+
     #transcript_analysis(srt)
     #file_path = "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/finals.mp4"
 
@@ -157,6 +159,92 @@ def color_clip(size, duration, fps=25, color=(50, 50, 0), output='color.mp4'):
     ColorClip(size, color, duration=duration).write_videofile(output, fps=fps)
 
 
+def make_the_video(srt):
+    #
+    # SET UP GOOGLE CLOUD STORAGE FOLDER 
+    # 
+    bucket_name = "scraped_videos_sign"
+    folder_path = "Video_scraped/"
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+
+    for i in range(len(srt)): 
+
+        #
+        # SENTENCE PROCESSING
+        # 
+        sentence = json.dumps(srt[i]).split('"')[3]  #processing to select sentence from srt #{I, love, gdogs} 3 words
+        word_list = sentence.split()  #split sentence in words
+        duration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
+        fulltext = sentence + duration
+        duration = float(duration)  #make duration become number from string
+        duration_per_word = duration / len(
+            word_list)  #divide duration per number of word
+
+        video_words = []  #if we have the video of word just put it there
+        no_video_words = []
+
+        size = (320, 240)  #standard size used in most video
+        duration_blank = duration_per_word  #the blank video should last for a word 
+
+        j = 0  #counter to set the first video of the sequence
+
+        # loop going through each word of a sentence
+        for word in word_list:
+
+            print(word)
+            videoname = word + ".mp4"  #get the filename 
+            filename = folder_path + videoname
+
+            # this checks that the file exist, if exist select the sign video otherwise put a blank one
+            if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
+                print(videoname)
+                # video_words.append(videoname)
+                # clip = VideoFileClip(
+                #     pathtovideo_string
+                # )  # make the video a VideoFileClip format which moviepy uses
+                # clip = clip.resize(size)  #check size
+                # clip_dur = clip.duration  # check duration
+                # multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                # clip = clip.speedx(multiplier)
+                # else make the video blank calling the color_clip function
+            else:
+                print("NOT FOUND " + videoname)
+                # no_video_words.append(videoname)
+                # color_clip(size, duration_blank)
+                # clip = VideoFileClip(
+                #     "color.mp4" # TO CHANGE
+                # )
+
+        #     if j == 0:
+        #         final_clip = clip # final clip is for a sentence
+        #     final_clip = concatenate_videoclips(
+        #         [final_clip, clip])  #concatenate the clips into a single clip
+        #     j = j + 1
+        #     # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
+
+        # if l == 0:
+        #     final_clips_united = final_clip
+
+        # final_clips_united = concatenate_videoclips(
+        #     [final_clips_united, final_clip])
+        # l = l + 1
+
+    # write the final result into a file called finals.mp4
+    #final_clips_united.write_videofile("finals.mp4")
+
+    # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
+    # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
+    # final_clip = concatenate_videoclips([clip_1,clip_2])
+    # final_clip.write_videofile("final.mp4")
+
+    #print(video_words)
+    #print(no_video_words)
+    return fulltext
+
+
+
+
 # this is the function to translate the transcript to sign video
 def transcript_analysis(srt):
 
@@ -190,11 +278,16 @@ def transcript_analysis(srt):
 
         j = 0  #counter to set the first video of the sequence
         print(word_list) # I , love , dogs
+
+        #Connect to google cloud storage 
+
+        bucket_name = 'scraped_videos_sign'
+
         # loop going through each word of a sentence
         for word in word_list:
             print(word)
             videoname = word + ".mp4"  #get the filename 
-            pathtovideo = Path("/Users/francescocenciarelli/Video_scraped/" +
+            pathtovideo = Path("Video_scraped/" +
                                videoname)
             pathtovideo_string = str(pathtovideo)
             # this checks that the file exist, if exist select the sign video otherwise put a blank one
@@ -213,7 +306,7 @@ def transcript_analysis(srt):
                 no_video_words.append(videoname)
                 color_clip(size, duration_blank)
                 clip = VideoFileClip(
-                    "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/color.mp4" # TO CHANGE
+                    "color.mp4" # TO CHANGE
                 )
 
             if j == 0:
@@ -229,13 +322,6 @@ def transcript_analysis(srt):
         final_clips_united = concatenate_videoclips(
             [final_clips_united, final_clip])
         l = l + 1
-
-        #this was to add NLE choppa to the translation
-        # if l == 5:
-        #   cripper = VideoFileClip("/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/NLE Choppa throwing up gang signs while buying grills-ukNvLsGvdC4.mp4")
-        #   cripper = cripper.resize(size)
-        #   final_clips_united = concatenate_videoclips([final_clips_united, cripper])
-        #   print(l)
 
     # write the final result into a file called finals.mp4
     final_clips_united.write_videofile("finals.mp4")
