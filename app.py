@@ -60,9 +60,9 @@ def getdata():
     url = json.dumps(request.get_json()).split('"')[3]
 
     video_id = url.split("v=")[1]
-    #print(video_id)
+
     srt = retrieve_transcripts_youtube(video_id)
-    print(srt)
+
     #transcript_analysis(srt)
     #file_path = "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/finals.mp4"
 
