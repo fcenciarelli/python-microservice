@@ -163,10 +163,15 @@ def make_the_video(srt):
     #
     # SET UP GOOGLE CLOUD STORAGE FOLDER 
     # 
+    print("S")
     bucket_name = "scraped_videos_sign"
+    print("H")
     folder_path = "Video_scraped/"
+    print("I")
     storage_client = storage.Client()
+    print("P")
     bucket = storage_client.bucket(bucket_name)
+    print("O")
 
     for i in range(len(srt)): 
 
