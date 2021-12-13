@@ -165,9 +165,9 @@ def make_the_video(srt):
     bucket_name = "scraped_videos_sign"
     print("H")
     folder_path = "Video_scraped/"
-    print("I")
+    print("Non funziona")
     storage_client = storage.Client()
-    print("P")
+    print("Porcoddio")
     bucket = storage_client.bucket(bucket_name)
     print("O")
 
