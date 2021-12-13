@@ -23,7 +23,7 @@ from google.cloud import storage
 # Declearing that the app is using Flask
 app = Flask(__name__)
 
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/ServiceKey_GoogleCloud.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
 #CHANGED THE VARIABLE
 def upload_to_bucket(blob_name, file_path, bucket_name):
     try:
@@ -60,7 +60,7 @@ def getdata():
     video_id = url.split("v=")[1]
 
     srt = retrieve_transcripts_youtube(video_id)
-
+    print(srt)
     make_the_video(srt)
 
     #transcript_analysis(srt)
