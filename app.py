@@ -19,6 +19,7 @@ from moviepy.editor import *
 from flask import send_file, send_from_directory, safe_join, abort
 import os
 from google.cloud import storage
+import asyncio
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -54,11 +55,9 @@ def getdata():
     print(request.headers)  #this is just to see the details of the request
     print("The json is: ")
     print(request.get_json())  #the request is sent through json format where the link is stored
-
     url = json.dumps(request.get_json()).split('"')[3]
-
     video_id = url.split("v=")[1]
-
+    
     srt = retrieve_transcripts_youtube(video_id)
     print(srt)
     make_the_video(srt)
