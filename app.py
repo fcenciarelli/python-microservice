@@ -90,7 +90,7 @@ class VideoMaking(Thread):
         self.request = request
 
     def run(self):
-        srt = retrieve_transcripts_youtube(video_id)
+        srt = retrieve_transcripts_youtube("ITvXlax4ZXk")
         print(srt)
 
         make_the_video(srt)
