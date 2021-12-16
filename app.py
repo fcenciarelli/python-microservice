@@ -1,3 +1,6 @@
+
+# Importing the libraries
+
 from __future__ import print_function
 from flask import Flask, jsonify, request
 import json
@@ -19,7 +22,8 @@ from moviepy.editor import *
 from flask import send_file, send_from_directory, safe_join, abort
 import os
 from google.cloud import storage
-from multiprocessing import Process
+from threading import Thread
+
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -60,9 +64,10 @@ def getdata():
 
     video_id = url.split("v=")[1]
 
-    srt = retrieve_transcripts_youtube(video_id)
-    print(srt)
-    make_the_video(srt)
+    thread_a = VideoMaking(request.__copy__())
+    thread_a.start()
+    # heavy_process = Process( target=make_the_video(srt), daemon=True)
+    # heavy_process.start()
 
     #transcript_analysis(srt)
     #file_path = "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/finals.mp4"
@@ -77,6 +82,19 @@ def getdata():
     #after the following functions can be used to do everything we need
     # video_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4")
     # audio_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4)
+
+
+class VideoMaking(Thread):
+    def __init__(self, request):
+        Thread.__init__(self)
+        self.request = request
+
+    def run(self):
+        srt = retrieve_transcripts_youtube(video_id)
+        print(srt)
+
+        make_the_video(srt)
+        print("done")
 
 
 #takes in only the video link and uses YOUTUBE_DL to download video
