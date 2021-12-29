@@ -84,19 +84,25 @@ def getdata():
     # audio_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4)
 
 
+def send_done_confirmation(url, videoid):
+    headers = {'Content-type': 'text/html; charset=UTF-8'}
+    response = requests.post(url, data=videoid, headers=headers)
+
+
+
+
 class VideoMaking(Thread):
     def __init__(self, request):
         Thread.__init__(self)
         self.request = request
 
     def run(self):
-
         srt = retrieve_transcripts_youtube("ITvXlax4ZXk")
         print(srt)
         make_the_video(srt)
-        print("done")
 
-
+        #url = heroku link to the java app when we will have it
+        #send_done_confirmation(url, videoid)
 
 
 #function to get the transcript from yotube taking in the youtube id (letters and numbers after watch?v= in the youtube link)
