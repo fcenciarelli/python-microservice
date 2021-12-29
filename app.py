@@ -41,7 +41,7 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
         print(e)
         return False
 
-    
+  
 @app.route('/')
 def home():
     return "We are onlinee"
@@ -52,6 +52,7 @@ def get_image():
     return send_file(filename, mimetype='image/jpeg')
 
 
+
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
 @app.route('/download', methods=['POST'])  #sending a post request to '/' the function getdata is called
 def getdata():
@@ -59,11 +60,10 @@ def getdata():
     print(request.headers)  #this is just to see the details of the request
     print("The json is: ")
     print(request.get_json())  #the request is sent through json format where the link is stored
-
     url = json.dumps(request.get_json()).split('"')[3]
 
     video_id = url.split("v=")[1]
-
+    
     thread_a = VideoMaking(request.__copy__())
     thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
@@ -90,44 +90,13 @@ class VideoMaking(Thread):
         self.request = request
 
     def run(self):
+
         srt = retrieve_transcripts_youtube("ITvXlax4ZXk")
         print(srt)
-
         make_the_video(srt)
         print("done")
 
 
-#takes in only the video link and uses YOUTUBE_DL to download video
-def video_downloader(video_link):
-
-    print(video_link)
-
-    ydl_opts = {}  # no options needed to download the plain video
-    # with the options use the YOUTUBE DL download function, the file will be stored in the current folder
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_link])
-
-    return 0
-
-
-#same as video_downloader but with different options to download audio
-def audio_downloader(video_link):
-    print(video_link)
-    # Setting option for file format and quality
-    ydl_opts = {
-        'format':
-        'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'wav',
-            'preferredquality': '192',
-        }]
-    }
-
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_link])
-
-    return 0
 
 
 #function to get the transcript from yotube taking in the youtube id (letters and numbers after watch?v= in the youtube link)
@@ -155,11 +124,14 @@ def retrieve_transcripts_youtube(video_id):
         #print(transcript.translate('en').fetch())
 
         #select the transcript and put it into a variable called srt
+
         srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
 
         #this thing is if you want to save the transcript into a file
 
         #filename = "subtitles_" + video_id
+
+        # LOOP TO DOWNLOAD TRANCRIPTI TO FILE
 
         # with open(filename, "w") as f:
         #       # iterating through each element of list srt
@@ -190,6 +162,7 @@ def make_the_video(srt):
     bucket = storage_client.bucket(bucket_name)
     print("O")
 
+
     for i in range(len(srt)): 
 
         #
@@ -197,6 +170,7 @@ def make_the_video(srt):
         # 
         sentence = json.dumps(srt[i]).split('"')[3]  #processing to select sentence from srt #{I, love, gdogs} 3 words
         word_list = sentence.split()  #split sentence in words
+
         duration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
         fulltext = sentence + duration
         duration = float(duration)  #make duration become number from string
@@ -213,15 +187,17 @@ def make_the_video(srt):
 
         # loop going through each word of a sentence
         for word in word_list:
-
+ 
             print(word)
-            videoname = word + ".mp4"  #get the filename 
-            filename = folder_path + videoname
+            videoname = word + ".mp4"  #get the filename  "dog.mp4"
+            filename = folder_path + videoname #  "video_scarped/dog.mp4"
 
             # this checks that the file exist, if exist select the sign video otherwise put a blank one
             if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
                 print(videoname)
+
                 # video_words.append(videoname)
+
                 # clip = VideoFileClip(
                 #     pathtovideo_string
                 # )  # make the video a VideoFileClip format which moviepy uses
@@ -229,7 +205,7 @@ def make_the_video(srt):
                 # clip_dur = clip.duration  # check duration
                 # multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 # clip = clip.speedx(multiplier)
-                # else make the video blank calling the color_clip function
+                #else make the video blank calling the color_clip function
             else:
                 print("NOT FOUND " + videoname)
                 # no_video_words.append(videoname)
@@ -262,6 +238,127 @@ def make_the_video(srt):
 
     #print(video_words)
     #print(no_video_words)
+    return fulltext
+
+
+
+
+
+
+#main function executed when the program starts
+if __name__ == '__main__':
+    #you can execute all the functions written here
+    #transcript_analysis_from_sentence()
+    app.run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Other functions useful 
+
+
+
+
+# same as before but uses a string of text yuo can write
+def transcript_analysis_from_sentence():
+
+    fulltext = ""
+
+    l = 0
+    for i in range(1):
+        sentence = "Hi how are you I will meet you at the restaurant"  # this is the string that will be translated in sign
+        word_list = sentence.split()
+        duration = 10
+        duration_per_word = duration / len(word_list)
+        print(duration_per_word)
+
+        video_words = []
+        no_video_words = []
+
+        size = (320, 240)
+        duration_blank = duration_per_word
+
+        j = 0
+        print(word_list)
+
+        for word in word_list:
+            print(word)
+            videoname = word + ".mp4"
+            pathtovideo = Path("/Users/francescocenciarelli/Video_scraped/" +
+                               videoname)
+            pathtovideo_string = str(pathtovideo)
+
+            if pathtovideo.is_file():
+                print(videoname)
+                video_words.append(videoname)
+                clip = VideoFileClip(pathtovideo_string)
+                clip = clip.resize(size)
+                clip_dur = clip.duration
+                multiplier = clip_dur / duration_blank
+                #clip = clip.speedx(multiplier)
+            else:
+                no_video_words.append(videoname)
+                color_clip(size, duration_blank)
+                clip = VideoFileClip(
+                    "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/color.mp4"
+                )
+
+            if j == 0:
+                final_clip = clip
+            final_clip = concatenate_videoclips([final_clip, clip])
+            j = j + 1
+
+        if l == 0:
+            final_clips_united = final_clip
+
+        final_clips_united = concatenate_videoclips(
+            [final_clips_united, final_clip])
+        l = l + 1
+        # if l == 5:
+        #   cripper = VideoFileClip("/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/NLE Choppa throwing up gang signs while buying grills-ukNvLsGvdC4.mp4")
+        #   cripper = cripper.resize(size)
+        #   final_clips_united = concatenate_videoclips([final_clips_united, cripper])
+        #   print(l)
+
+    final_clips_united.write_videofile("videoooo.mp4")
+
+    # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
+    # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
+    # final_clip = concatenate_videoclips([clip_1,clip_2])
+    # final_clip.write_videofile("final.mp4")
+
+    print(video_words)
+    print(no_video_words)
     return fulltext
 
 
@@ -358,86 +455,35 @@ def transcript_analysis(srt):
     return fulltext
 
 
-# same as before but uses a string of text yuo can write
-def transcript_analysis_from_sentence():
 
-    fulltext = ""
+#takes in only the video link and uses YOUTUBE_DL to download video
+def video_downloader(video_link):
 
-    l = 0
-    for i in range(1):
-        sentence = "Hi how are you I will meet you at the restaurant"  # this is the string that will be translated in sign
-        word_list = sentence.split()
-        duration = 10
-        duration_per_word = duration / len(word_list)
-        print(duration_per_word)
+    print(video_link)
 
-        video_words = []
-        no_video_words = []
+    ydl_opts = {}  # no options needed to download the plain video
+    # with the options use the YOUTUBE DL download function, the file will be stored in the current folder
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([video_link])
 
-        size = (320, 240)
-        duration_blank = duration_per_word
-
-        j = 0
-        print(word_list)
-
-        for word in word_list:
-            print(word)
-            videoname = word + ".mp4"
-            pathtovideo = Path("/Users/francescocenciarelli/Video_scraped/" +
-                               videoname)
-            pathtovideo_string = str(pathtovideo)
-
-            if pathtovideo.is_file():
-                print(videoname)
-                video_words.append(videoname)
-                clip = VideoFileClip(pathtovideo_string)
-                clip = clip.resize(size)
-                clip_dur = clip.duration
-                multiplier = clip_dur / duration_blank
-                #clip = clip.speedx(multiplier)
-            else:
-                no_video_words.append(videoname)
-                color_clip(size, duration_blank)
-                clip = VideoFileClip(
-                    "/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/color.mp4"
-                )
-
-            if j == 0:
-                final_clip = clip
-            final_clip = concatenate_videoclips([final_clip, clip])
-            j = j + 1
-
-        if l == 0:
-            final_clips_united = final_clip
-
-        final_clips_united = concatenate_videoclips(
-            [final_clips_united, final_clip])
-        l = l + 1
-        # if l == 5:
-        #   cripper = VideoFileClip("/Users/francescocenciarelli/Desktop/University/Year3/Programming3 /Microservice/NLE Choppa throwing up gang signs while buying grills-ukNvLsGvdC4.mp4")
-        #   cripper = cripper.resize(size)
-        #   final_clips_united = concatenate_videoclips([final_clips_united, cripper])
-        #   print(l)
-
-    final_clips_united.write_videofile("videoooo.mp4")
-
-    # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
-    # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
-    # final_clip = concatenate_videoclips([clip_1,clip_2])
-    # final_clip.write_videofile("final.mp4")
-
-    print(video_words)
-    print(no_video_words)
-    return fulltext
+    return 0
 
 
-#main function executed when the program starts
-if __name__ == '__main__':
-    #you can execute all the functions written here
-    #transcript_analysis_from_sentence()
-    app.run()
+#same as video_downloader but with different options to download audio
+def audio_downloader(video_link):
+    print(video_link)
+    # Setting option for file format and quality
+    ydl_opts = {
+        'format':
+        'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'wav',
+            'preferredquality': '192',
+        }]
+    }
 
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([video_link])
 
-
-array_article = []
-
+    return 0
