@@ -159,9 +159,9 @@ def make_the_video(srt):
     # SET UP GOOGLE CLOUD STORAGE FOLDER 
     # 
     print("S")
-    bucket_name = "scraped_videos_sign"
+    bucket_name = "auto-sign-main"
     print("H")
-    folder_path = "Video_scraped/"
+    folder_path = "words_videos/"
     print("Non funziona")
     storage_client = storage.Client()
     print("Porcoddio")
