@@ -64,7 +64,7 @@ def getdata():
 
     video_id = url.split("v=")[1]
     
-    thread_a = VideoMaking(request.__copy__())
+    thread_a = VideoMaking(video_id.__copy__())
     thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
     # heavy_process.start()
@@ -92,15 +92,14 @@ def send_done_confirmation(url, videoid):
 
 
 class VideoMaking(Thread):
-    def __init__(self, request):
+    def __init__(self, video_id):
         Thread.__init__(self)
-        self.request = request
+        self.video_id = video_id
 
     def run(self):
-        srt = retrieve_transcripts_youtube("ITvXlax4ZXk")
+        srt = retrieve_transcripts_youtube(self.video_id)
         print(srt)
         make_the_video(srt)
-
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
 
