@@ -184,13 +184,15 @@ def make_the_video(srt, video_id):
             videoname = word + ".mp4"  #get the filename  "dog.mp4"
             filename = folder_path + videoname #  "video_scarped/dog.mp4"
 
+            video_path = 'file:gs://' + bucket_name + '/' + filename
+
             # this checks that the file exist, if exist select the sign video otherwise put a blank one
             if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
                 print(videoname)
 
                 video_words.append(videoname)
 
-                clip = VideoFileClip(storage.Blob(bucket=bucket, name=filename))  # make the video a VideoFileClip format which moviepy uses
+                clip = VideoFileClip(video_path)  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
