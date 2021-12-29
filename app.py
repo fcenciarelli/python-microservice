@@ -97,7 +97,9 @@ class VideoMaking(Thread):
         self.request = request
 
     def run(self):
-        srt = retrieve_transcripts_youtube("KoihlAl7ugQ")
+        url = json.dumps(self.request.get_json()).split('"')[3]
+        video_id = url.split("v=")[1]
+        srt = retrieve_transcripts_youtube(video_id)
         print(srt)
         make_the_video(srt)
         #url = heroku link to the java app when we will have it
