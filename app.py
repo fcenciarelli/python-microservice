@@ -30,16 +30,6 @@ app = Flask(__name__)
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
 #CHANGED THE VARIABLE
-def upload_to_bucket(blob_name, file_path, bucket_name):
-    try:
-        bucket = storage_client.get_bucket(bucket_name)
-        blob = bucket.blob(blob_name)
-        blob.upload_from_filename(file_path)
-        return True
-
-    except Exception as e:
-        print(e)
-        return False
 
   
 @app.route('/')
@@ -101,7 +91,7 @@ class VideoMaking(Thread):
         video_id = url.split("v=")[1]
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
-        make_the_video(srt)
+        make_the_video(srt, video_id)
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
 
@@ -155,7 +145,7 @@ def color_clip(size, duration, fps=25, color=(50, 50, 0), output='color.mp4'):
     ColorClip(size, color, duration=duration).write_videofile(output, fps=fps)
 
 
-def make_the_video(srt):
+def make_the_video(srt, video_id):
     #
     # SET UP GOOGLE CLOUD STORAGE FOLDER 
     # 
@@ -198,51 +188,64 @@ def make_the_video(srt):
             if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
                 print(videoname)
 
-                # video_words.append(videoname)
+                video_words.append(videoname)
 
-                # clip = VideoFileClip(
-                #     pathtovideo_string
-                # )  # make the video a VideoFileClip format which moviepy uses
-                # clip = clip.resize(size)  #check size
-                # clip_dur = clip.duration  # check duration
-                # multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                # clip = clip.speedx(multiplier)
+                clip = VideoFileClip(storage.Blob(bucket=bucket, name=filename))  # make the video a VideoFileClip format which moviepy uses
+                clip = clip.resize(size)  #check size
+                clip_dur = clip.duration  # check duration
+                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                clip = clip.speedx(multiplier)
                 #else make the video blank calling the color_clip function
             else:
                 print("NOT FOUND " + videoname)
-                # no_video_words.append(videoname)
-                # color_clip(size, duration_blank)
-                # clip = VideoFileClip(
-                #     "color.mp4" # TO CHANGE
-                # )
+                no_video_words.append(videoname)
+                color_clip(size, duration_blank)
+                clip = VideoFileClip(
+                    "color.mp4" # TO CHANGE
+                )
 
-        #     if j == 0:
-        #         final_clip = clip # final clip is for a sentence
-        #     final_clip = concatenate_videoclips(
-        #         [final_clip, clip])  #concatenate the clips into a single clip
-        #     j = j + 1
-        #     # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
+            if j == 0:
+                final_clip = clip # final clip is for a sentence
+            final_clip = concatenate_videoclips(
+                [final_clip, clip])  #concatenate the clips into a single clip
+            j = j + 1
+            # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
 
-        # if l == 0:
-        #     final_clips_united = final_clip
+        if l == 0:
+            final_clips_united = final_clip
 
-        # final_clips_united = concatenate_videoclips(
-        #     [final_clips_united, final_clip])
-        # l = l + 1
+        final_clips_united = concatenate_videoclips(
+            [final_clips_united, final_clip])
+        l = l + 1
 
-    # write the final result into a file called finals.mp4
-    #final_clips_united.write_videofile("finals.mp4")
+    #write the final result into a file called finals.mp4
+    final_clips_united.write_videofile(video_id + ".mp4")
+    #upload_to_bucket('finals.mp4', file_path, "data_bucket_video_swag" )
+
+    upload_to_bucket(bucket_name, video_id)
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
     # final_clip = concatenate_videoclips([clip_1,clip_2])
+
     # final_clip.write_videofile("final.mp4")
 
     #print(video_words)
     #print(no_video_words)
     return fulltext
 
+def upload_to_bucket(bucket_name, video_id):
+    try:
+        storage_client = storage.Client()
+        blob_name = video_id + ".mp4"
+        bucket = storage_client.get_bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+        blob.upload_from_filename(blob_name)
+        return True
 
+    except Exception as e:
+        print(e)
+        return False
 
 
 
