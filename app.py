@@ -190,7 +190,7 @@ def make_the_video(srt, video_id):
 
                 video_words.append(videoname)
                 blob = bucket.blob(filename)
-                blob.download_to_filename("videos/" + videoname)
+                blob.download_to_filename(videoname)
 
                 clip = VideoFileClip("videos/" + videoname)  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
