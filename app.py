@@ -189,10 +189,10 @@ def make_the_video(srt, video_id):
                 print(videoname)
 
                 video_words.append(videoname)
-                blob = bucket.blob(filename)
-                blob.download_to_filename(videoname)
+                #blob = bucket.blob(filename)
+                #blob.download_to_filename(videoname)
 
-                clip = VideoFileClip("videos/" + videoname)  # make the video a VideoFileClip format which moviepy uses
+                clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
