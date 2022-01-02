@@ -132,6 +132,8 @@ def make_the_video(srt, video_id):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
 
+    getbucket = storage_client.get_bucket(bucket_name)
+
 
     for i in range(len(srt)): 
 
@@ -170,7 +172,13 @@ def make_the_video(srt, video_id):
                 #blob = bucket.blob(filename)
                 #blob.download_to_filename(videoname)
 
-                clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
+                # New code
+
+                word_video = getbucket.get_blob(filename)
+
+                clip = VideoFileClip(word_video)
+
+                # clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
