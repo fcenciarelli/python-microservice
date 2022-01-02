@@ -176,7 +176,10 @@ def make_the_video(srt, video_id):
 
                 word_video = getbucket.get_blob(filename)
 
-                clip = VideoFileClip(word_video)
+                word_video.download_to_filename(word + ".mp4")
+
+                clip = VideoFileClip("/" + word + ".mp4")
+
 
                 # clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
                 clip = clip.resize(size)  #check size
