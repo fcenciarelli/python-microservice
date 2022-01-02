@@ -174,7 +174,7 @@ def make_the_video(srt, video_id):
                 #blob.download_to_filename(videoname)
 
                 # New code
-                gcs_uri ="gs://auto-sign-main/words_videos/a.mp4"
+                gcs_uri ="file:gs://auto-sign-main/words_videos/a.mp4"
                 word_video = getbucket.get_blob(filename)
                 # word_video.download_to_filename(word + ".mp4")
                 clip = VideoFileClip(gcs_uri)
