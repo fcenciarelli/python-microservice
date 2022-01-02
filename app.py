@@ -112,7 +112,9 @@ def retrieve_transcripts_youtube(video_id):
     try:
         srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
     except:
+        srt = "Hello"
         print("There has been an error with the download of the subtitles")
+
 
     return srt  #return the transcript
 
