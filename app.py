@@ -173,12 +173,10 @@ def make_the_video(srt, video_id):
                 #blob.download_to_filename(videoname)
 
                 # New code
-
+                gcs_uri ="gs://auto-sign-main/words_videos/a.mp4"
                 word_video = getbucket.get_blob(filename)
-
-                word_video.download_to_filename(word + ".mp4")
-
-                clip = VideoFileClip("/" + word + ".mp4")
+                # word_video.download_to_filename(word + ".mp4")
+                clip = VideoFileClip(gcs_uri)
 
 
                 # clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
