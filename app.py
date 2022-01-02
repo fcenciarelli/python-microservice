@@ -115,7 +115,6 @@ def retrieve_transcripts_youtube(video_id):
         srt = "Hello"
         print("There has been an error with the download of the subtitles")
 
-
     return srt  #return the transcript
 
 
@@ -136,7 +135,7 @@ def make_the_video(srt, video_id):
 
     getbucket = storage_client.get_bucket(bucket_name)
 
-
+    l= 0
     for i in range(len(srt)): 
 
         #
