@@ -120,7 +120,7 @@ def retrieve_transcripts_youtube(video_id):
 
 # This function here is to create the clips that are shown when there is not the word we need in the database of words
 # takes as args the size (320, 240) and duration of the video and outputs it to color.mp4
-def color_clip(size, duration, fps=25, color=(50, 50, 0), output='color.mp4'):
+def color_clip(size, duration, fps=25, color=(50, 50, 0), output='/tmp/color.mp4'):
     ColorClip(size, color, duration=duration).write_videofile(output, fps=fps)
 
 
@@ -187,6 +187,10 @@ def make_the_video(srt, video_id):
             else:
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
+
+
+
+
                 color_clip(size, duration_blank)
                 clip = VideoFileClip(
                     "color.mp4" # TO CHANGE
