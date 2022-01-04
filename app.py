@@ -109,6 +109,7 @@ def retrieve_transcripts_youtube(video_id):
     #     result = transcript.translate('en').fetch()
 
     #     srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
+    print(video_id)
     try:
         srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
     except:
