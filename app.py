@@ -188,13 +188,10 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
 
-
-
-
-                color_clip(size, duration_blank)
-                clip = VideoFileClip(
-                    "/tmp/color.mp4" # TO CHANGE
-                )
+                # color_clip(size, duration_blank)
+                # clip = VideoFileClip(
+                #     "/tmp/color.mp4" # TO CHANGE
+                # )
 
             if j == 0:
                 final_clip = clip # final clip is for a sentence
