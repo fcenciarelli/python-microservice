@@ -179,12 +179,14 @@ def make_the_video(srt, video_id):
                 #blob.download_to_filename(videoname)
 
                 # New code
-                # word_video = getbucket.get_blob(filename)
-                # word_video.download_to_filename("/tmp/" + word + ".mp4")
-                # print("putting it into a videoclipfile")
-                # clip = VideoFileClip("/tmp/" + word + ".mp4")
-                clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
+                word_video = getbucket.get_blob(filename)
+                word_video.download_to_filename("/tmp/" + word + ".mp4")
+                print("putting it into a videoclipfile")
+                clip = VideoFileClip("/tmp/" + word + ".mp4")
+                #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
+            
+                
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
