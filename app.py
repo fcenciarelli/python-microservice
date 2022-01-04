@@ -53,7 +53,8 @@ def getdata():
     url = json.dumps(request.get_json()).split('"')[3]
 
     video_id = url.split("v=")[1]
-    
+    srt = retrieve_transcripts_youtube(video_id)
+    print(srt)
     thread_a = VideoMaking(request.__copy__())
     thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
