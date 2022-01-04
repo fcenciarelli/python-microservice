@@ -193,7 +193,7 @@ def make_the_video(srt, video_id):
 
                 color_clip(size, duration_blank)
                 clip = VideoFileClip(
-                    "color.mp4" # TO CHANGE
+                    "/tmp/color.mp4" # TO CHANGE
                 )
 
             if j == 0:
