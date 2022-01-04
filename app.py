@@ -231,7 +231,7 @@ def make_the_video(srt, video_id):
 def upload_to_bucket(bucket_name, video_id):
     try:
         storage_client = storage.Client()
-        blob_name = video_id + ".mp4"
+        blob_name = "/tmp/" + video_id + ".mp4"
         bucket = storage_client.get_bucket(bucket_name)
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(blob_name)
