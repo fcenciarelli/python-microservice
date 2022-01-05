@@ -188,6 +188,7 @@ def make_the_video(srt, video_id):
                 try: 
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
+                    print("For some fucking reason use color clip")
                     clip = ColorClip(size, (50, 50, 0), duration=duration)
 
                 # DEltete clip
