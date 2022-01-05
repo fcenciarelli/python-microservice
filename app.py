@@ -214,6 +214,7 @@ def make_the_video(srt, video_id):
         final_clips_united = concatenate_videoclips(
             [final_clips_united, final_clip])
         l = l + 1
+        final_clip.close
 
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4")
