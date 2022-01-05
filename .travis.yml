@@ -4,7 +4,8 @@ language: python
 
 deploy:
   provider: heroku
+  app: python-microservice
   api_key:
     secure: ENCRYPTED_API_KEY
   on:
-    repo: fcenciarelli/python-microservice
+   all-branches: true
