@@ -165,6 +165,14 @@ def make_the_video(srt, video_id):
 
         j = 0  #counter to set the first video of the sequence
 
+        # take word list and remov 
+        # word_list {parola1, parola 2, parola3}
+
+        # if for parola in word_list == {articolo} {parolo} {avverbi}:
+        #     parola = "diocane"
+
+        # word_list{dog diocane diocane}
+
         # loop going through each word of a sentence
         for word in word_list:
  
@@ -222,7 +230,7 @@ def make_the_video(srt, video_id):
         close_clip(final_clip)
 
     #write the final result into a file called finals.mp4
-    final_clips_united.write_videofile("/tmp/" + video_id + ".mp4")
+    final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
 
     upload_to_bucket(bucket_name, video_id)
 
