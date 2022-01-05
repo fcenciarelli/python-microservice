@@ -79,8 +79,6 @@ def send_done_confirmation(url, videoid):
     response = requests.post(url, data=videoid, headers=headers)
 
 
-
-
 class VideoMaking(Thread):
     def __init__(self, request):
         Thread.__init__(self)
