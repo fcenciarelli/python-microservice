@@ -204,8 +204,7 @@ def make_the_video(srt, video_id):
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
                 [final_clip, clip])  #concatenate the clips into a single clip
-
-            clip.close
+            del clip
             j = j + 1
             # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
         if l == 0:
@@ -214,7 +213,7 @@ def make_the_video(srt, video_id):
         final_clips_united = concatenate_videoclips(
             [final_clips_united, final_clip])
         l = l + 1
-        final_clip.close
+        del final_clip
 
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4")
