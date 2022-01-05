@@ -183,6 +183,8 @@ def make_the_video(srt, video_id):
                 word_video = getbucket.get_blob(filename)
                 word_video.download_to_filename("/tmp/" + word + ".mp4")
                 print("putting it into a videoclipfile")
+
+
                 clip = VideoFileClip("/tmp/" + word + ".mp4")
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
@@ -202,9 +204,10 @@ def make_the_video(srt, video_id):
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
                 [final_clip, clip])  #concatenate the clips into a single clip
+
+            clip.close
             j = j + 1
             # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
-
         if l == 0:
             final_clips_united = final_clip
 
