@@ -188,7 +188,7 @@ def make_the_video(srt, video_id):
                 clip = VideoFileClip("/tmp/" + word + ".mp4")
 
                 # DEltete clip
-                os.remove("/tmp/" + word + ".mp4")
+                
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
                
