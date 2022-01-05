@@ -7,4 +7,4 @@ deploy:
   api_key:
     secure: ENCRYPTED_API_KEY
   on:
-    repo: john-doe/simple-eshop
+    repo: fcenciarelli/python-microservice
