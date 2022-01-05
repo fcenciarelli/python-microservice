@@ -42,8 +42,6 @@ def get_image():
     filename = "martin.jpeg"
     return send_file(filename, mimetype='image/jpeg')
 
-
-
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
 @app.route('/download', methods=['POST'])  #sending a post request to '/' the function getdata is called
 def getdata():
