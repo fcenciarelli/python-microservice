@@ -185,7 +185,10 @@ def make_the_video(srt, video_id):
                 word_video.download_to_filename("/tmp/" + word + ".mp4")
 
                 print("putting it into a videoclipfile")
-                clip = VideoFileClip("/tmp/" + word + ".mp4")
+                try: 
+                    clip = VideoFileClip("/tmp/" + word + ".mp4")
+                except:
+                    clip = ColorClip(size, (50, 50, 0), duration=duration)
 
                 # DEltete clip
                 
