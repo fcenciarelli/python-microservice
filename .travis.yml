@@ -5,4 +5,6 @@ language: python
 deploy:
   provider: heroku
   api_key:
-    secure:
+    secure: ENCRYPTED_API_KEY
+  on:
+    repo: john-doe/simple-eshop
