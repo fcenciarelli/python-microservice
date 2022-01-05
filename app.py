@@ -184,16 +184,14 @@ def make_the_video(srt, video_id):
                 word_video.download_to_filename("/tmp/" + word + ".mp4")
                 print("putting it into a videoclipfile")
 
-
                 clip = VideoFileClip("/tmp/" + word + ".mp4")
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
             
-                
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                clip = clip.speedx(multiplier)
+                #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
                 #else make the video blank calling the color_clip function
             else:
                 print("NOT FOUND " + videoname)
