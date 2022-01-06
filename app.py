@@ -224,6 +224,7 @@ def make_the_video(srt, video_id):
                 #    os.remove(filename)
                 #else:
                 #    print("Error: %s file not found" %filename)
+                os.system("heroku restart -a app_name")
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
@@ -254,7 +255,7 @@ def make_the_video(srt, video_id):
         close_clip(final_clip)
 
         # DEltete clip
-        del clip
+        
 
         
 
