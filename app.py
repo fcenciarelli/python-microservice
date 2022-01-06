@@ -224,7 +224,8 @@ def make_the_video(srt, video_id):
                 #    os.remove(filename)
                 #else:
                 #    print("Error: %s file not found" %filename)
-                os.system("heroku restart -a python-microservice")
+                #os.system("heroku restart -a python-microservice")
+                os.system("heroku restart")
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
@@ -239,12 +240,14 @@ def make_the_video(srt, video_id):
                 no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
                 clip = ColorClip(size, (50, 50, 0), duration=duration)
+                os.system("heroku restart")
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
                 [final_clip, clip])  #concatenate the clips into a single clip
             close_clip(clip)
             j = j + 1
+            os.system("heroku restart")
             # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
         if l == 0:
             final_clips_united = final_clip
@@ -253,6 +256,7 @@ def make_the_video(srt, video_id):
             [final_clips_united, final_clip])
         l = l + 1
         close_clip(final_clip)
+        os.sysstem("heroku restart")
 
         # DEltete clip
         
@@ -261,8 +265,8 @@ def make_the_video(srt, video_id):
 
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
-
     upload_to_bucket(bucket_name, video_id)
+    os.sysstem("heroku restart")
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
