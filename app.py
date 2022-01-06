@@ -190,54 +190,53 @@ def make_the_video(srt, video_id):
         # loop going through each word of a sentence
         for word in word_list:
 
+            
+            print(word)
+            videoname = word + ".mp4"  #get the filename  "dog.mp4"
+            filename = folder_path + videoname #  "video_scarped/dog.mp4"
+
+            # this checks that the file exist, if exist select the sign video otherwise put a blank one
             # Check id word is not in the remove list
-            if word not in words_remove:
+            if storage.Blob(bucket=bucket, name=filename).exists(storage_client) and (word not in words_remove):
+                print(videoname)
 
-                print(word)
-                videoname = word + ".mp4"  #get the filename  "dog.mp4"
-                filename = folder_path + videoname #  "video_scarped/dog.mp4"
+                video_words.append(videoname)
+                #blob = bucket.blob(filename)
+                #blob.download_to_filename(videoname)
 
-                # this checks that the file exist, if exist select the sign video otherwise put a blank one
-                if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
-                    print(videoname)
+                # New code
+                word_video = getbucket.get_blob(filename)
+                word_video.download_to_filename("/tmp/" + word + ".mp4")
 
-                    video_words.append(videoname)
-                    #blob = bucket.blob(filename)
-                    #blob.download_to_filename(videoname)
-
-                    # New code
-                    word_video = getbucket.get_blob(filename)
-                    word_video.download_to_filename("/tmp/" + word + ".mp4")
-
-                    print("putting it into a videoclipfile")
-                    try: 
-                        clip = VideoFileClip("/tmp/" + word + ".mp4")
-                    except:
-                        print("For some fucking reason use color clip")
-                        clip = ColorClip(size, (50, 50, 0), duration=duration)
-
-                    # DEltete clip
-                    
-                    #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
-                    #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
-                
-                    clip = clip.resize(size)  #check size
-                    clip_dur = clip.duration  # check duration
-                    multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                    #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
-                    #else make the video blank calling the color_clip function
-                else:
-                    print("NOT FOUND " + videoname)
-                    no_video_words.append(videoname)
-                    # color_clip(size, duration_blank)
+                print("putting it into a videoclipfile")
+                try: 
+                    clip = VideoFileClip("/tmp/" + word + ".mp4")
+                except:
+                    print("For some fucking reason use color clip")
                     clip = ColorClip(size, (50, 50, 0), duration=duration)
-                if j == 0:
-                    final_clip = clip # final clip is for a sentence
-                final_clip = concatenate_videoclips(
-                    [final_clip, clip])  #concatenate the clips into a single clip
-                close_clip(clip)
-                j = j + 1
-                # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
+
+                # DEltete clip
+                
+                #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
+                #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
+            
+                clip = clip.resize(size)  #check size
+                clip_dur = clip.duration  # check duration
+                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
+                #else make the video blank calling the color_clip function
+            else:
+                print("NOT FOUND " + videoname)
+                no_video_words.append(videoname)
+                # color_clip(size, duration_blank)
+                clip = ColorClip(size, (50, 50, 0), duration=duration)
+            if j == 0:
+                final_clip = clip # final clip is for a sentence
+            final_clip = concatenate_videoclips(
+                [final_clip, clip])  #concatenate the clips into a single clip
+            close_clip(clip)
+            j = j + 1
+            # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
         if l == 0:
             final_clips_united = final_clip
 
