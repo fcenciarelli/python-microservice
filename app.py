@@ -7,6 +7,7 @@ from flask import Flask, jsonify, request
 import json
 import urllib.request
 from urllib.request import Request, urlopen
+from numpy.lib.function_base import delete
 import requests
 import bs4 as bs4
 import requests
@@ -219,10 +220,10 @@ def make_the_video(srt, video_id):
                     clip = ColorClip(size, (50, 50, 0), duration=duration)
 
                 # DEltete clip
-                if os.path.isfile(filename):
-                    os.remove(filename)
-                else:
-                    print("Error: %s file not found" %filename)
+                #if os.path.isfile(filename):
+                #    os.remove(filename)
+                #else:
+                #    print("Error: %s file not found" %filename)
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
@@ -251,6 +252,9 @@ def make_the_video(srt, video_id):
             [final_clips_united, final_clip])
         l = l + 1
         close_clip(final_clip)
+
+        # DEltete clip
+        del clip
 
         
 
