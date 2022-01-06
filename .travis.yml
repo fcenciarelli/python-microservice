@@ -1,4 +1,6 @@
 language: python
+script: 
+  -app.py
 deploy:
   provider: heroku
   api_key: 
