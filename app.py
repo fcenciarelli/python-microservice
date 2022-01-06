@@ -225,8 +225,8 @@ def make_the_video(srt, video_id):
                 #else:
                 #    print("Error: %s file not found" %filename)
                 #os.system("heroku restart -a python-microservice")
-                os.system("heroku restart")
-                os.system("heroku ps:restart web -a <python-microservice>")
+                #os.system("heroku restart")
+                os.system("heroku restart --app 'python-microservice'")
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
@@ -260,8 +260,8 @@ def make_the_video(srt, video_id):
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
     upload_to_bucket(bucket_name, video_id)
-    os.system("heroku restart")
-    os.system("heroku ps:restart web -a <python-microservice>")
+    #os.system("heroku restart")
+    os.system("heroku restart --app 'python-microservice'")
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
