@@ -219,7 +219,11 @@ def make_the_video(srt, video_id):
                     clip = ColorClip(size, (50, 50, 0), duration=duration)
 
                 # DEltete clip
-                
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                else:
+                    print("Error: %s file not found" %filename)
+                    
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
             
@@ -247,6 +251,8 @@ def make_the_video(srt, video_id):
             [final_clips_united, final_clip])
         l = l + 1
         close_clip(final_clip)
+
+        
 
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
