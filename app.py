@@ -111,14 +111,17 @@ def retrieve_transcripts_youtube(video_id):
     #     result = transcript.translate('en').fetch()
 
     #     srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
+    
+    ###
+
     print(video_id)
     try:
         srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
     except TooManyRequests:
-        print("Too many requests")
+        print("Too many requests \n")
         srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}, {'text': 'yourself for fun a rather for your', 'start': 1.68, 'duration': 4.52}, {'text': 'health', 'start': 3.99, 'duration': 2.21}, {'text': 'here you get rubbed down shaken up', 'start': 7.88, 'duration': 4.27}, {'text': 'crumbled and pushed around for a price', 'start': 10.38, 'duration': 4.049}, {'text': 'and a purpose if you want to turn fat', 'start': 12.15, 'duration': 5.219}, {'text': "and fled into nice hard muscle there's", 'start': 14.429, 'duration': 4.081}, {'text': 'central heating and wall-to-wall', 'start': 17.369, 'duration': 3.481}, {'text': 'carpeting to soften the blows and all', 'start': 18.51, 'duration': 4.679}, {'text': 'kinds of mechanical wonders to waste the', 'start': 20.85, 'duration': 5.089}, {'text': 'way your waste', 'start': 23.189, 'duration': 2.75}, {'text': 'once you join the club you can get down', 'start': 36.5, 'duration': 3.78}, {'text': 'to a workout when you like for as long', 'start': 38.63, 'duration': 3.75}]
     except:
-        print("some error occurred")
+        print("some error occurred \n")
         srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}, {'text': 'yourself for fun a rather for your', 'start': 1.68, 'duration': 4.52}, {'text': 'health', 'start': 3.99, 'duration': 2.21}, {'text': 'here you get rubbed down shaken up', 'start': 7.88, 'duration': 4.27}, {'text': 'crumbled and pushed around for a price', 'start': 10.38, 'duration': 4.049}, {'text': 'and a purpose if you want to turn fat', 'start': 12.15, 'duration': 5.219}, {'text': "and fled into nice hard muscle there's", 'start': 14.429, 'duration': 4.081}, {'text': 'central heating and wall-to-wall', 'start': 17.369, 'duration': 3.481}, {'text': 'carpeting to soften the blows and all', 'start': 18.51, 'duration': 4.679}, {'text': 'kinds of mechanical wonders to waste the', 'start': 20.85, 'duration': 5.089}, {'text': 'way your waste', 'start': 23.189, 'duration': 2.75}, {'text': 'once you join the club you can get down', 'start': 36.5, 'duration': 3.78}, {'text': 'to a workout when you like for as long', 'start': 38.63, 'duration': 3.75}]
 
     #srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}, {'text': 'yourself for fun a rather for your', 'start': 1.68, 'duration': 4.52}, {'text': 'health', 'start': 3.99, 'duration': 2.21}, {'text': 'here you get rubbed down shaken up', 'start': 7.88, 'duration': 4.27}, {'text': 'crumbled and pushed around for a price', 'start': 10.38, 'duration': 4.049}, {'text': 'and a purpose if you want to turn fat', 'start': 12.15, 'duration': 5.219}, {'text': "and fled into nice hard muscle there's", 'start': 14.429, 'duration': 4.081}, {'text': 'central heating and wall-to-wall', 'start': 17.369, 'duration': 3.481}, {'text': 'carpeting to soften the blows and all', 'start': 18.51, 'duration': 4.679}, {'text': 'kinds of mechanical wonders to waste the', 'start': 20.85, 'duration': 5.089}, {'text': 'way your waste', 'start': 23.189, 'duration': 2.75}, {'text': 'once you join the club you can get down', 'start': 36.5, 'duration': 3.78}, {'text': 'to a workout when you like for as long', 'start': 38.63, 'duration': 3.75}]
@@ -143,6 +146,17 @@ def make_the_video(srt, video_id):
     getbucket = storage_client.get_bucket(bucket_name)
 
     l= 0
+
+    #
+    # Create the list of words NOT to translate
+    #---------------------------------------------
+    words_remove = []
+    with open('remove list.txt', 'r') as f:
+        for line in f:
+            words_remove.append(line)
+    #---------------------------------------------
+
+
     for i in range(len(srt)): 
 
         #
@@ -175,52 +189,55 @@ def make_the_video(srt, video_id):
 
         # loop going through each word of a sentence
         for word in word_list:
- 
-            print(word)
-            videoname = word + ".mp4"  #get the filename  "dog.mp4"
-            filename = folder_path + videoname #  "video_scarped/dog.mp4"
 
-            # this checks that the file exist, if exist select the sign video otherwise put a blank one
-            if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
-                print(videoname)
+            # Check id word is not in the remove list
+            if word not in words_remove:
 
-                video_words.append(videoname)
-                #blob = bucket.blob(filename)
-                #blob.download_to_filename(videoname)
+                print(word)
+                videoname = word + ".mp4"  #get the filename  "dog.mp4"
+                filename = folder_path + videoname #  "video_scarped/dog.mp4"
 
-                # New code
-                word_video = getbucket.get_blob(filename)
-                word_video.download_to_filename("/tmp/" + word + ".mp4")
+                # this checks that the file exist, if exist select the sign video otherwise put a blank one
+                if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
+                    print(videoname)
 
-                print("putting it into a videoclipfile")
-                try: 
-                    clip = VideoFileClip("/tmp/" + word + ".mp4")
-                except:
-                    print("For some fucking reason use color clip")
-                    clip = ColorClip(size, (50, 50, 0), duration=duration)
+                    video_words.append(videoname)
+                    #blob = bucket.blob(filename)
+                    #blob.download_to_filename(videoname)
 
-                # DEltete clip
+                    # New code
+                    word_video = getbucket.get_blob(filename)
+                    word_video.download_to_filename("/tmp/" + word + ".mp4")
+
+                    print("putting it into a videoclipfile")
+                    try: 
+                        clip = VideoFileClip("/tmp/" + word + ".mp4")
+                    except:
+                        print("For some fucking reason use color clip")
+                        clip = ColorClip(size, (50, 50, 0), duration=duration)
+
+                    # DEltete clip
+                    
+                    #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
+                    #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
                 
-                #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
-                #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
-               
-                clip = clip.resize(size)  #check size
-                clip_dur = clip.duration  # check duration
-                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
-                #else make the video blank calling the color_clip function
-            else:
-                print("NOT FOUND " + videoname)
-                no_video_words.append(videoname)
-                # color_clip(size, duration_blank)
-                clip = ColorClip(size, (50, 50, 0), duration=duration)
-            if j == 0:
-                final_clip = clip # final clip is for a sentence
-            final_clip = concatenate_videoclips(
-                [final_clip, clip])  #concatenate the clips into a single clip
-            close_clip(clip)
-            j = j + 1
-            # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
+                    clip = clip.resize(size)  #check size
+                    clip_dur = clip.duration  # check duration
+                    multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                    #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
+                    #else make the video blank calling the color_clip function
+                else:
+                    print("NOT FOUND " + videoname)
+                    no_video_words.append(videoname)
+                    # color_clip(size, duration_blank)
+                    clip = ColorClip(size, (50, 50, 0), duration=duration)
+                if j == 0:
+                    final_clip = clip # final clip is for a sentence
+                final_clip = concatenate_videoclips(
+                    [final_clip, clip])  #concatenate the clips into a single clip
+                close_clip(clip)
+                j = j + 1
+                # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
         if l == 0:
             final_clips_united = final_clip
 
