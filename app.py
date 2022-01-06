@@ -33,6 +33,13 @@ app = Flask(__name__)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
 #CHANGED THE VARIABLE
 
+
+#UNIT TESTING
+def test_index_route():
+    response = app.test_client().get('/')
+
+    assert response.status_code == 200
+
   
 @app.route('/')
 def home():
