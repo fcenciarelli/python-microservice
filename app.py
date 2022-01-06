@@ -227,6 +227,7 @@ def make_the_video(srt, video_id):
                 #os.system("heroku restart -a python-microservice")
                 #os.system("heroku restart")
                 os.system("heroku restart --app 'python-microservice'")
+                os.system("heroku ps:restart -a python-microservice")
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
