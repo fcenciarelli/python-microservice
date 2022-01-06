@@ -1,15 +1,15 @@
 --- 
-before_install: 
-  - "python -m pip install --upgrade pip"
-before_script: 
-  - "export FLASK_APP=\"$TRAVIS_BUILD_DIR/app.py\""
-  - "export FLASK_DEBUG=1"
 deploy: 
   api_key: 
     secure: UuMmdIiAYBUd+zSxMdfBCayrKwi5j13Y0VCEkad4KoQ9hKOGuGC+Ex/+BrCIbNHi3AZrjLkkiRbasDVEi/WKoQ5WlvF+PBDH8Yuuoj5imQ0KGKtzzy3DcJkE36ZOzV0kpljaffr1bRlS2GWwxtAWR8E0znPNdbR6/vdmGitraAxhTuZkMk9skRx0yMdpYohEDyAz6Pvf1jXAy5EJUtvRu7eZ01kx2RfBSpWU+2Oq0t+MBPtq70zib2qe+aeJe5+XhPPtaAaHmLrwmT6ZqFM+/1Z7XzN9HYFtQrRlhpGkZ3rR9kL3+6I/DzzAvbOycgFQvw/Feb0tJ+K7V7rQ61W8g/4o5mc2qvQ2hDOd421RZV2Rtl1MqtomAYz79+PL3mFckGUlOfuFF92N5CEnOq5xmx9r0YWpo0orfp4FFt8vsS/thii/a7W3fyFQnhP7LpdU5ASAYyRC++77UUawyQnwFPraPCVLGoKgEd7V/TMSYeBd0csRL63kIE2TOwTWNR6U8NfGihNVEMZn0Sxm7300Mz14lm5tG4Tc6FJUFoSSAcDI2X4Yt2kQbk3E2F76IiTeyI7KEygoGQtNv+qd9B0LASw8Q+TBm19UnAnvYjuQgHhB8TxOrtpHlOxZpgeTs10j4z5JzlatulhuI2Q8lOHggJWubu/+Fy4fZQI5tV0r7Y4=
   provider: heroku
 install: "pip install -r requirements.txt"
-matrix: 
-  include: 
-    - python: "3.9.9"
-script: "flask test"
+language: python
+python: 
+  - 3.9.9
+script: 
+  - "python3 app.py &"
+  - "sleep 5"
+  - "python3 test_datetime_service.py"
+sudo: false
+
