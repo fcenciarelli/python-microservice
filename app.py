@@ -256,7 +256,7 @@ def make_the_video(srt, video_id):
             [final_clips_united, final_clip])
         l = l + 1
         close_clip(final_clip)
-        os.sysstem("heroku restart")
+        os.system("heroku restart")
 
         # DEltete clip
         
@@ -266,7 +266,7 @@ def make_the_video(srt, video_id):
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
     upload_to_bucket(bucket_name, video_id)
-    os.sysstem("heroku restart")
+    os.system("heroku restart")
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
@@ -306,6 +306,7 @@ if __name__ == '__main__':
     #you can execute all the functions written here
     #transcript_analysis_from_sentence()
     app.run()
+
 
 
 
