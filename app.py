@@ -97,7 +97,7 @@ class VideoMaking(Thread):
         print(srt)
 
         # test temporary.....
-        srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}]
+        #srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}]
         # -------------------
 
         make_the_video(srt, video_id)
