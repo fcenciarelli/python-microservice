@@ -182,8 +182,8 @@ def make_the_video(srt, video_id):
         print("DURATION PER WORD: %s", duration_per_word )
 
 
-        video_words = []  #if we have the video of word just put it there
-        no_video_words = []
+        ##video_words = []  #if we have the video of word just put it there
+        ##no_video_words = []
 
         size = (320, 240)  #standard size used in most video
         duration_blank = duration_per_word  #the blank video should last for a word 
@@ -211,7 +211,7 @@ def make_the_video(srt, video_id):
             if storage.Blob(bucket=bucket, name=filename).exists(storage_client) and (word not in words_remove):
                 print(videoname)
 
-                video_words.append(videoname)
+                ##video_words.append(videoname)
                 #blob = bucket.blob(filename)
                 #blob.download_to_filename(videoname)
 
@@ -234,15 +234,16 @@ def make_the_video(srt, video_id):
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
-            
+                """
                 clip = clip.resize(size)  #check size -> risize clip to fit in the box
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                """
                 #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
                 #else make the video blank calling the color_clip function
             else:
                 print("NOT FOUND " + videoname)
-                no_video_words.append(videoname)
+                ##no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
                 clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
             if j == 0:
