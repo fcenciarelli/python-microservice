@@ -95,6 +95,12 @@ class VideoMaking(Thread):
         print(video_id)
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
+
+        # test temporary.....
+        srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}]
+        video_id = 000
+        # -------------------
+
         make_the_video(srt, video_id)
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
@@ -214,25 +220,21 @@ def make_the_video(srt, video_id):
 
                 print("putting it into a videoclipfile")
                 try: 
+                    # CREATE CLIP (single video)
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
                     print("For some fucking reason use color clip")
                     clip = ColorClip(size, (50, 50, 0), duration=duration)
 
-                # DEltete clip
-                #if os.path.isfile(filename):
-                #    os.remove(filename)
-                #else:
-                #    print("Error: %s file not found" %filename)
-                #os.system("heroku restart -a python-microservice")
-                #os.system("heroku restart")
-                os.system("heroku restart --app 'python-microservice'")
-                os.system("heroku ps:restart -a python-microservice")
+
+                # TRYING TO RESTART THE DYNOS TO CLEAR MEMORY....
+                #os.system("heroku restart --app 'python-microservice'")
+                #os.system("heroku ps:restart -a python-microservice")
                     
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
                 #clip = VideoFileClip("https://storage.cloud.google.com/auto-sign-main/words_videos/8-8.mp4?authuser=1")  # make the video a VideoFileClip format which moviepy uses
             
-                clip = clip.resize(size)  #check size
+                clip = clip.resize(size)  #check size -> risize clip to fit in the box
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
@@ -248,7 +250,7 @@ def make_the_video(srt, video_id):
                 [final_clip, clip])  #concatenate the clips into a single clip
             close_clip(clip)
             j = j + 1
-            # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
+            # final_clip is a sentence_video, final_clips_united is the whole video (more sentences together)
         if l == 0:
             final_clips_united = final_clip
 
@@ -261,7 +263,8 @@ def make_the_video(srt, video_id):
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
     upload_to_bucket(bucket_name, video_id)
-    #os.system("heroku restart")
+
+    # TRY RESTARTING DYNOS TO CLEAR THE MEMORY
     os.system("heroku restart --app 'python-microservice'")
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
