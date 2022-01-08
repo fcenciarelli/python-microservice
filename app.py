@@ -131,7 +131,7 @@ def retrieve_transcripts_youtube(video_id):
         print("some error occurred \n")
         #srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}, {'text': 'yourself for fun a rather for your', 'start': 1.68, 'duration': 4.52}, {'text': 'health', 'start': 3.99, 'duration': 2.21}, {'text': 'here you get rubbed down shaken up', 'start': 7.88, 'duration': 4.27}, {'text': 'crumbled and pushed around for a price', 'start': 10.38, 'duration': 4.049}, {'text': 'and a purpose if you want to turn fat', 'start': 12.15, 'duration': 5.219}, {'text': "and fled into nice hard muscle there's", 'start': 14.429, 'duration': 4.081}, {'text': 'central heating and wall-to-wall', 'start': 17.369, 'duration': 3.481}, {'text': 'carpeting to soften the blows and all', 'start': 18.51, 'duration': 4.679}, {'text': 'kinds of mechanical wonders to waste the', 'start': 20.85, 'duration': 5.089}, {'text': 'way your waste', 'start': 23.189, 'duration': 2.75}, {'text': 'once you join the club you can get down', 'start': 36.5, 'duration': 3.78}, {'text': 'to a workout when you like for as long', 'start': 38.63, 'duration': 3.75}]
         srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}]
-        
+
     return srt  #return the transcript
 
 
@@ -178,8 +178,9 @@ def make_the_video(srt, video_id):
         duration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
         fulltext = sentence + duration
         duration = float(duration)  #make duration become number from string
-        duration_per_word = duration / len(
-            word_list)  #divide duration per number of word
+        duration_per_word = duration / len(word_list)  #divide duration per number of word
+        print("DURATION PER WORD: %s", duration_per_word )
+
 
         video_words = []  #if we have the video of word just put it there
         no_video_words = []
@@ -224,7 +225,7 @@ def make_the_video(srt, video_id):
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
                     print("For some fucking reason use color clip")
-                    clip = ColorClip(size, (50, 50, 0), duration=duration)
+                    clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
 
 
                 # TRYING TO RESTART THE DYNOS TO CLEAR MEMORY....
@@ -243,7 +244,7 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
-                clip = ColorClip(size, (50, 50, 0), duration=duration)
+                clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
@@ -265,7 +266,7 @@ def make_the_video(srt, video_id):
     upload_to_bucket(bucket_name, video_id)
 
     # TRY RESTARTING DYNOS TO CLEAR THE MEMORY
-    os.system("heroku restart --app 'python-microservice'")
+    #os.system("heroku restart --app 'python-microservice'")
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
