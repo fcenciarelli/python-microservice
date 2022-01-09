@@ -230,7 +230,7 @@ def make_the_video(srt, video_id):
                 except:
                     print("For some fucking reason use color clip")
                     translate = False
-                    #clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
+                    clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
 
 
                 # TRYING TO RESTART THE DYNOS TO CLEAR MEMORY....
