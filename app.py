@@ -226,10 +226,10 @@ def make_the_video(srt, video_id):
                 try: 
                     # CREATE CLIP (single video)
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
-                    translate == True
+                    translate = True
                 except:
                     print("For some fucking reason use color clip")
-                    translate == False
+                    translate = False
                     #clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
 
 
