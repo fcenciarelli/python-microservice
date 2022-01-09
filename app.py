@@ -262,7 +262,8 @@ def make_the_video(srt, video_id):
                 #j = j + 1
             # final_clip is a sentence_video, final_clips_united is the whole video (more sentences together)
         multiplier = final_clip.duration/duration
-        final_clip = final_clip.fx(vfx.speedx, multiplier)
+        if j != 0:
+            final_clip = final_clip.fx(vfx.speedx, multiplier)
 
         # Squeeze final_clip into the duration of the sentence
         if l == 0:
