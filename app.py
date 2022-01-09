@@ -253,11 +253,12 @@ def make_the_video(srt, video_id):
                 #clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
             if j == 0 and translate == True:
                 final_clip = clip # final clip is for a sentence
+                j = j + 1
             elif translate == True:    
                 final_clip = concatenate_videoclips(
                     [final_clip, clip])  #concatenate the clips into a single clip
-                close_clip(clip)
-                j = j + 1
+            close_clip(clip)
+                #j = j + 1
             # final_clip is a sentence_video, final_clips_united is the whole video (more sentences together)
         multiplier = final_clip.duration/duration
         final_clip = final_clip.fx(vfx.speedx, multiplier)
