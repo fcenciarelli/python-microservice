@@ -225,7 +225,7 @@ def make_the_video(srt, video_id):
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
                     print("For some fucking reason use color clip")
-                    clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
+                    #clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
 
 
                 # TRYING TO RESTART THE DYNOS TO CLEAR MEMORY....
@@ -245,7 +245,7 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 ##no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
-                clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
+                #clip = ColorClip(size, (50, 50, 0), duration=duration_blank)
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
@@ -253,6 +253,10 @@ def make_the_video(srt, video_id):
             close_clip(clip)
             j = j + 1
             # final_clip is a sentence_video, final_clips_united is the whole video (more sentences together)
+        multiplier = final_clip.duration/duration
+        final_clip = final_clip.fx(vfx.speedx, multiplier)
+        
+        # Squeeze final_clip into the duration of the sentence
         if l == 0:
             final_clips_united = final_clip
 
