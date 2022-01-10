@@ -213,8 +213,9 @@ def make_the_video(srt, video_id):
                 try: 
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
-                    print("For some fucking reason use color clip")
-                    clip = ImageClip("blank_image.png", duration = duration_blank)
+                    print("For some reason use color clip")
+                    clip = ImageClip("blank_image.png")
+                    clip.set_duration(duration_blank)
 
                 # DEltete clip
                 
@@ -230,10 +231,9 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
-                clip = ImageClip("blank_image.png", duration = duration_blank)
+                clip = ImageClip("blank_image.png")
+                clip.set_duration(duration_blank)
                 clip = clip.resize(size)
-                clip_dur = clip.duration
-                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 clip = clip.speedx(multiplier) 
             if j == 0:
                 final_clip = clip # final clip is for a sentence
