@@ -212,7 +212,8 @@ def make_the_video(srt, video_id):
                 try: 
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                     # Generate a text clip 
-                    txt_clip = (TextClip(word, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
+                    word_str = word.encode('utf8')
+                    txt_clip = (TextClip(word_str, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
                     clip = CompositeVideoClip([clip, txt_clip])
                     close_clip(txt_clip)
                 except Exception as e:
