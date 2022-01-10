@@ -271,17 +271,16 @@ def make_the_video(srt, video_id):
                 final_clips_united = final_clip
                 close_clip(final_clip)
                 l = l + 1
-            
-            if l != 0:
+            elif l != 0:
                 print("FUCK YEAHHH")
                 final_clips_united = concatenate_videoclips(
                     [final_clips_united, final_clip])
                 close_clip(final_clip)
 
-    
-    #write the final result into a file called finals.mp4
-    final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
-    upload_to_bucket(bucket_name, video_id)
+    if l != 0:
+        #write the final result into a file called finals.mp4
+        final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
+        upload_to_bucket(bucket_name, video_id)
 
     # TRY RESTARTING DYNOS TO CLEAR THE MEMORY
     #os.system("heroku restart --app 'python-microservice'")
