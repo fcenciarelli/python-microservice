@@ -167,6 +167,7 @@ def make_the_video(srt, video_id):
             duration = float(startnext)- float(start)
         except IndexError: 
             duration = float(fakeduration)
+
         fulltext = sentence + fakeduration
         duration_per_word = duration / len(
             word_list)  #divide duration per number of word
@@ -223,7 +224,8 @@ def make_the_video(srt, video_id):
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                #clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
+                
+                clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
                 #else make the video blank calling the color_clip function
             else:
                 print("NOT FOUND " + videoname)
@@ -231,6 +233,8 @@ def make_the_video(srt, video_id):
                 # color_clip(size, duration_blank)
                 clip = ImageClip("blank_image.png", duration = duration_blank)
                 clip = clip.resize(size)
+                multiplier = clip_dur / duration_blank  #scale it  (5/3) 
+                clip = clip.speedx(multiplier) 
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
@@ -282,6 +286,7 @@ def close_clip(clip):
       del clip.audio
     del clip
   except Exception as e:
+    del clip
     print("Error in close_clip() ", e)
 
 #main function executed when the program starts
