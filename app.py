@@ -234,7 +234,6 @@ def make_the_video(srt, video_id):
                 clip = ImageClip("blank_image.png")
                 clip.set_duration(duration_blank)
                 clip = clip.resize(size)
-                clip = clip.speedx(multiplier) 
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
