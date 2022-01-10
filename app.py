@@ -162,10 +162,10 @@ def make_the_video(srt, video_id):
         fakeduration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
         start = (json.dumps(srt[i]).split('"')[6]).split(":")[1].split(",")[0]
 
-        if json.dumps(srt[i+1]):
+        try:
             startnext = (json.dumps(srt[i+1]).split('"')[6]).split(":")[1].split(",")[0]
             duration = float(startnext)- float(start)
-        else: 
+        except IndexError: 
             duration = float(fakeduration)
         fulltext = sentence + fakeduration
         duration_per_word = duration / len(
