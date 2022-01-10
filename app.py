@@ -212,15 +212,13 @@ def make_the_video(srt, video_id):
                 try: 
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                     # Generate a text clip 
-                    txt_clip = TextClip(word, fontsize = 70, color = 'white') 
-                    txt_clip = txt_clip.set_pos('center').set_duration(clip.duration) 
+                    txt_clip = (TextClip(word, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
                     clip = CompositeVideoClip([clip, txt_clip])
                     close_clip(txt_clip)
                 except:
                     print("For some reason use color clip")
                     clip = ImageClip("blank_image.png").set_duration(duration_blank)
   
-
                 # DEltete clip
                 
                 #clip = VideoFileClip("'gs://auto-sign-main/words_videos/" + word + ".mp4")
