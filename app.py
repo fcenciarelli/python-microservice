@@ -159,11 +159,19 @@ def make_the_video(srt, video_id):
         sentence = json.dumps(srt[i]).split('"')[3]  #processing to select sentence from srt #{I, love, gdogs} 3 words
         word_list = sentence.split()  #split sentence in words
 
-        duration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
+        fakeduration = ((json.dumps(srt[i]).split('"')[8]).split(":")[1]).split("}")[0]  #select duration from srt 
+        start = (json.dumps(srt[i]).split('"')[6]).split(":")[1].split(",")[0]
+
+        if json.dumps(srt[i+1]):
+            startnext = (json.dumps(srt[i+1]).split('"')[6]).split(":")[1].split(",")[0]
+            duration = float(startnext)- float(start)
+        else: 
+            duration = fakeduration
         fulltext = sentence + duration
-        duration = float(duration)  #make duration become number from string
         duration_per_word = duration / len(
             word_list)  #divide duration per number of word
+
+        #{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}
 
         video_words = []  #if we have the video of word just put it there
         no_video_words = []
