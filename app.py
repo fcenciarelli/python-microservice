@@ -166,8 +166,8 @@ def make_the_video(srt, video_id):
             startnext = (json.dumps(srt[i+1]).split('"')[6]).split(":")[1].split(",")[0]
             duration = float(startnext)- float(start)
         else: 
-            duration = fakeduration
-        fulltext = sentence + duration
+            duration = float(fakeduration)
+        fulltext = sentence + fakeduration
         duration_per_word = duration / len(
             word_list)  #divide duration per number of word
 
