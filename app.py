@@ -142,6 +142,14 @@ def make_the_video(srt, video_id):
 
     getbucket = storage_client.get_bucket(bucket_name)
 
+    words_remove = []
+    with open('remove list.txt', 'r') as f:
+        for line in f:
+            b = line.strip()
+            a= b.split('\n')
+            words_remove.append(a[0])
+    #print(words_remove)
+
     l= 0
     for i in range(len(srt)): 
 
@@ -181,10 +189,10 @@ def make_the_video(srt, video_id):
             filename = folder_path + videoname #  "video_scarped/dog.mp4"
 
             # this checks that the file exist, if exist select the sign video otherwise put a blank one
-            if storage.Blob(bucket=bucket, name=filename).exists(storage_client):
+            if storage.Blob(bucket=bucket, name=filename).exists(storage_client) and (word not in words_remove):
                 print(videoname)
 
-                video_words.append(videoname)
+                #video_words.append(videoname)
                 #blob = bucket.blob(filename)
                 #blob.download_to_filename(videoname)
 
