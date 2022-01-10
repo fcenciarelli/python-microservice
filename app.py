@@ -268,11 +268,13 @@ def make_the_video(srt, video_id):
         # Squeeze final_clip into the duration of the sentence
         if l == 0 and j!= 0:
             final_clips_united = final_clip
-
-        final_clips_united = concatenate_videoclips(
-            [final_clips_united, final_clip])
-        l = l + 1
-        close_clip(final_clip)
+            close_clip(final_clip)
+            l = l + 1
+        
+        if l != 0 and j!= 0:
+            final_clips_united = concatenate_videoclips(
+                [final_clips_united, final_clip])
+            close_clip(final_clip)
 
     
     #write the final result into a file called finals.mp4
