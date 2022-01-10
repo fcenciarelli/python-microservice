@@ -273,6 +273,7 @@ def make_the_video(srt, video_id):
                 l = l + 1
             
             if l != 0:
+                print("FUCK YEAHHH")
                 final_clips_united = concatenate_videoclips(
                     [final_clips_united, final_clip])
                 close_clip(final_clip)
