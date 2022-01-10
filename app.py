@@ -169,7 +169,7 @@ def make_the_video(srt, video_id):
             duration = float(fakeduration)
 
         fulltext = sentence + fakeduration
-        duration_per_word = duration / len(
+        duration_blank = duration / len(
             word_list)  #divide duration per number of word
 
         #{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}
@@ -177,8 +177,7 @@ def make_the_video(srt, video_id):
         video_words = []  #if we have the video of word just put it there
         no_video_words = []
 
-        size = (320, 240)  #standard size used in most video
-        duration_blank = duration_per_word  #the blank video should last for a word 
+        size = (320, 240)  #standard size used in most video  #the blank video should last for a word 
 
         j = 0  #counter to set the first video of the sequence
 
@@ -214,8 +213,8 @@ def make_the_video(srt, video_id):
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
                     print("For some reason use color clip")
-                    clip = ImageClip("blank_image.png")
-                    clip.set_duration(duration_blank)
+                    clip = ImageClip("blank_image.png").set_duration(duration_blank)
+  
 
                 # DEltete clip
                 
@@ -231,8 +230,7 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
-                clip = ImageClip("blank_image.png")
-                clip.set_duration(duration_blank)
+                clip = ImageClip("blank_image.png").set_duration(duration_blank)
                 clip = clip.resize(size)
             if j == 0:
                 final_clip = clip # final clip is for a sentence
