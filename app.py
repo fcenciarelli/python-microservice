@@ -224,7 +224,7 @@ def make_the_video(srt, video_id):
                 clip = clip.resize(size)  #check size
                 clip_dur = clip.duration  # check duration
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
-                
+                print(clip_dur)
                 clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
                 #else make the video blank calling the color_clip function
             else:
@@ -234,6 +234,7 @@ def make_the_video(srt, video_id):
                 clip = ImageClip("blank_image.png", duration = duration_blank)
                 clip = clip.resize(size)
                 clip_dur = clip.duration
+                print(clip_dur)
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 clip = clip.speedx(multiplier) 
             if j == 0:
