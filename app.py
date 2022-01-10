@@ -234,8 +234,8 @@ def make_the_video(srt, video_id):
                 clip = clip.resize(size)
             if j == 0:
                 final_clip = clip # final clip is for a sentence
-            final_clip = concatenate_videoclips(
-                [final_clip, clip])  #concatenate the clips into a single clip
+            else:
+                final_clip = concatenate_videoclips([final_clip, clip])  #concatenate the clips into a single clip
             close_clip(clip)
             j = j + 1
             # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
@@ -243,12 +243,10 @@ def make_the_video(srt, video_id):
         print(final_clip_dur)
         if l == 0:
             final_clips_united = final_clip
-
-        final_clips_united = concatenate_videoclips(
-            [final_clips_united, final_clip])
+        else:
+            final_clips_united = concatenate_videoclips([final_clips_united, final_clip])
         l = l + 1
         close_clip(final_clip)
-
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
 
