@@ -215,8 +215,8 @@ def make_the_video(srt, video_id):
                     txt_clip = (TextClip(word, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
                     clip = CompositeVideoClip([clip, txt_clip])
                     close_clip(txt_clip)
-                except:
-                    print("For some reason use color clip")
+                except Exception as e:
+                    print(e)
                     clip = ImageClip("blank_image.png").set_duration(duration_blank)
   
                 # DEltete clip
