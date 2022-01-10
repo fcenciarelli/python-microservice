@@ -205,7 +205,7 @@ def make_the_video(srt, video_id):
                     clip = VideoFileClip("/tmp/" + word + ".mp4")
                 except:
                     print("For some fucking reason use color clip")
-                    clip = ColorClip(size, (50, 50, 0), duration=duration)
+                    clip = ImageClip("blank_image.png", duration = duration_blank)
 
                 # DEltete clip
                 
@@ -221,7 +221,8 @@ def make_the_video(srt, video_id):
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
                 # color_clip(size, duration_blank)
-                clip = ColorClip(size, (50, 50, 0), duration=duration)
+                clip = ImageClip("blank_image.png", duration = duration_blank)
+                clip = clip.resize(size)
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             final_clip = concatenate_videoclips(
