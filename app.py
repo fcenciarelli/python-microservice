@@ -70,7 +70,7 @@ def getdata():
 
     #fulltext = transcript_analysis_from_sentence(srt)
 
-    return request.data
+    return Response(status=201)
     #after the following functions can be used to do everything we need
     # video_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4")
     # audio_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4)
