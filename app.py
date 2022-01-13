@@ -25,6 +25,7 @@ import os
 from google.cloud import storage
 from threading import Thread
 import pytest
+import gc
 
 
 # Declearing that the app is using Flask
