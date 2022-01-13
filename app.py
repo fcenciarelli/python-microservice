@@ -234,6 +234,8 @@ def make_the_video(srt, video_id):
 
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
+    
+    gc.collect()
 
     upload_to_bucket(bucket_name, video_id)
 
