@@ -57,7 +57,7 @@ def getdata():
     srt = retrieve_transcripts_youtube(video_id)
     print(srt)
     
-    t = Thread(target = VideoMaking, args= (request, )
+    t = Thread(target = VideoMaking, args= (request, ))
     t.start()
     
 #     thread_a = VideoMaking(request.__copy__())
