@@ -59,7 +59,6 @@ def getdata():
     
     
     thread_a = VideoMaking(request.__copy__())
-    thread_a.daemon = True
     thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
     # heavy_process.start()
@@ -91,7 +90,6 @@ class VideoMaking(Thread):
         Thread.__init__(self)
         self.__running = True
         self.request = request
-        self.stop = False
 
     def run(self):
         url = json.dumps(self.request.get_json()).split('"')[3]
@@ -100,11 +98,9 @@ class VideoMaking(Thread):
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
         make_the_video(srt, video_id)
-        self.stop = True
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
-        if self.stop:
-            return
+        return
 
 
 #function to get the transcript from yotube taking in the youtube id (letters and numbers after watch?v= in the youtube link)
