@@ -95,7 +95,7 @@ class VideoMaking(Thread):
         print(video_id)
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
-        make_the_video(srt, video_id)
+        fulltext = make_the_video(srt, video_id)
         gc.collect()
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
