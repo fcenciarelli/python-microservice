@@ -23,6 +23,7 @@ import os
 from google.cloud import storage
 from threading import Thread
 import gc
+import sys
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -98,6 +99,7 @@ class VideoMaking(Thread):
         gc.collect()
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
+        sys.exit()
         return
 
 
