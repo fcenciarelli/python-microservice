@@ -56,7 +56,7 @@ def getdata():
     video_id = url.split("v=")[1]
     srt = retrieve_transcripts_youtube(video_id)
     print(srt)
-    
+    gc.set_debug(gc.DEBUG_LEAK)
     
     thread_a = VideoMaking(request.__copy__())
     thread_a.start()
@@ -71,7 +71,7 @@ def getdata():
     # video_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4")
 
     #fulltext = transcript_analysis_from_sentence(srt)
-
+    gc.set_debug(gc.DEBUG_LEAK)
     return Response(status=201)
     #after the following functions can be used to do everything we need
     # video_downloader("https://www.youtube.com/watch?v=ukNvLsGvdC4")
@@ -98,6 +98,7 @@ class VideoMaking(Thread):
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
         make_the_video(srt, video_id)
+        gc.set_debug(gc.DEBUG_LEAK)
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
         return
