@@ -223,6 +223,8 @@ def make_the_video(srt, video_id):
                 except Exception as e:
                     print(e)
                     clip = ImageClip("blank_image.png").set_duration(duration_blank)
+                    
+                os.remove("/tmp/" + word + ".mp4")
   
                 # DEltete clip
                 
