@@ -242,10 +242,12 @@ def make_the_video(srt, video_id):
                 # color_clip(size, duration_blank)
                 clip = ImageClip("blank_image.png").set_duration(duration_blank)
                 clip = clip.resize(size)
+                gc.collect()
             if j == 0:
                 final_clip = clip # final clip is for a sentence
             else:
                 final_clip = concatenate_videoclips([final_clip, clip])  #concatenate the clips into a single clip
+                gc.collect()
             close_clip(clip)
             j = j + 1
             # final_clip is a sentence, final_clips_united is the whole video (more sentences together)
@@ -255,8 +257,10 @@ def make_the_video(srt, video_id):
             final_clips_united = final_clip
         else:
             final_clips_united = concatenate_videoclips([final_clips_united, final_clip])
+         
         l = l + 1
         close_clip(final_clip)
+        gc.collect()
     #write the final result into a file called finals.mp4
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 10)
     
@@ -266,6 +270,8 @@ def make_the_video(srt, video_id):
     upload_to_bucket(bucket_name, video_id)
     
     os.remove("/tmp/" + video_id + ".mp4")
+    
+    gc.collect()
 
     # clip_1 = VideoFileClip("p1b_tetris_1.mp4")
     # clip_2 = VideoFileClip("p1b_tetris_2.mp4")
