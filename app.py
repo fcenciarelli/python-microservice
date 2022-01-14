@@ -88,7 +88,7 @@ def send_done_confirmation(url, videoid):
 def VideoMaking(request):
     n=0
     while n < 1:
-         url = json.dumps(self.request.get_json()).split('"')[3]
+         url = json.dumps(request.get_json()).split('"')[3]
          video_id = url.split("v=")[1]
          print(video_id)
          srt = retrieve_transcripts_youtube(video_id)
