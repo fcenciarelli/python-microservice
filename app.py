@@ -59,6 +59,7 @@ def getdata():
     
     
     thread_a = VideoMaking(request.__copy__())
+    thread_a.daemon = True
     thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
     # heavy_process.start()
