@@ -57,11 +57,9 @@ def getdata():
     srt = retrieve_transcripts_youtube(video_id)
     print(srt)
     
-    t = Thread(target = VideoMaking, args= (request, ))
-    t.start()
     
-#     thread_a = VideoMaking(request.__copy__())
-#     thread_a.start()
+    thread_a = VideoMaking(request.__copy__())
+    thread_a.start()
     # heavy_process = Process( target=make_the_video(srt), daemon=True)
     # heavy_process.start()
 
@@ -84,38 +82,28 @@ def send_done_confirmation(url, videoid):
     headers = {'Content-type': 'text/html; charset=UTF-8'}
     response = requests.post(url, data=videoid, headers=headers)
 
-
-def VideoMaking(request):
-    n=0
-    while n < 1:
-         url = json.dumps(request.get_json()).split('"')[3]
-         video_id = url.split("v=")[1]
-         print(video_id)
-         srt = retrieve_transcripts_youtube(video_id)
-         print(srt)
-         make_the_video(srt, video_id)
-         n = n + 1
         
 
 
-# class VideoMaking(Thread):
-#     def __init__(self, request):
-#         Thread.__init__(self)
-#         self.__running = True
-#         self.request = request
-        
-#     def terminate(self):
-#         self._running = False
+class VideoMaking(Thread):
+    def __init__(self, request):
+        Thread.__init__(self)
+        self.__running = True
+        self.request = request
+        self.stop = False
 
-#     def run(self):
-#         url = json.dumps(self.request.get_json()).split('"')[3]
-#         video_id = url.split("v=")[1]
-#         print(video_id)
-#         srt = retrieve_transcripts_youtube(video_id)
-#         print(srt)
-#         make_the_video(srt, video_id)
-#         #url = heroku link to the java app when we will have it
-#         #send_done_confirmation(url, videoid)
+    def run(self):
+        url = json.dumps(self.request.get_json()).split('"')[3]
+        video_id = url.split("v=")[1]
+        print(video_id)
+        srt = retrieve_transcripts_youtube(video_id)
+        print(srt)
+        make_the_video(srt, video_id)
+        self.stop = True
+        #url = heroku link to the java app when we will have it
+        #send_done_confirmation(url, videoid)
+        if self.stop:
+            return
 
 
 #function to get the transcript from yotube taking in the youtube id (letters and numbers after watch?v= in the youtube link)
