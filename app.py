@@ -209,6 +209,8 @@ def make_the_video(srt, video_id):
                 # New code
                 word_video = getbucket.get_blob(filename)
                 word_video.download_to_filename("/tmp/" + word + ".mp4")
+                
+                gc.collect()
 
                 print("putting it into a videoclipfile")
                 try: 
