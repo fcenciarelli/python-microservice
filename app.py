@@ -236,6 +236,7 @@ def make_the_video(srt, video_id):
                 multiplier = clip_dur / duration_blank  #scale it  (5/3) 
                 clip = clip.speedx(multiplier)          # REMOVED THIS FOR DEBUG
                 #else make the video blank calling the color_clip function
+                gc.collect()
             else:
                 print("NOT FOUND " + videoname)
                 no_video_words.append(videoname)
@@ -290,6 +291,7 @@ def upload_to_bucket(bucket_name, video_id):
         bucket = storage_client.get_bucket(bucket_name)
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(blob_name)
+        gc.collect()
         return True
 
     except Exception as e:
@@ -303,8 +305,10 @@ def close_clip(clip):
       clip.audio.reader.close_proc()
       del clip.audio
     del clip
+    gc.collect()
   except Exception as e:
     del clip
+    gc.collect()
     print("Error in close_clip() ", e)
 
 #main function executed when the program starts
