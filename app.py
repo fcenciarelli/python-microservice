@@ -24,7 +24,7 @@ from flask import send_file, send_from_directory, safe_join, abort
 import os
 from google.cloud import storage
 from threading import Thread
-
+import gc
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -97,6 +97,7 @@ class VideoMaking(Thread):
         srt = retrieve_transcripts_youtube(video_id)
         print(srt)
         make_the_video(srt, video_id)
+        gc.collect()
         #url = heroku link to the java app when we will have it
         #send_done_confirmation(url, videoid)
         return
@@ -258,6 +259,7 @@ def make_the_video(srt, video_id):
     final_clips_united.write_videofile("/tmp/" + video_id + ".mp4", fps= 24)
     
     close_clip(final_clips_united)
+    gc.collect()
 
     upload_to_bucket(bucket_name, video_id)
 
