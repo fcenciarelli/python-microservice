@@ -30,6 +30,7 @@ app = Flask(__name__)
 #SET UP Google Credential
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
 
+tracemalloc.start()
 
 # debugging route to check the server works
 @app.route('/')
@@ -40,6 +41,13 @@ def home():
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
 @app.route('/download', methods=['POST'])  #sending a post request to '/' the function getdata is called
 def getdata():
+    lines = []
+    snapshot = tracemalloc.take_snapshot()
+    for stat in snapshot.statistics("lineno"):
+        lines.append(str(stat))
+    return "\n".join(lines)
+    
+    
     print("The header is: ")
     print(request.headers)  #this is just to see the details of the request
     print("The json is: ")
