@@ -23,6 +23,10 @@ from threading import Thread
 import gc
 import sys
 import multiprocessing
+from memory_profiler import profile
+
+@profile
+
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -30,7 +34,6 @@ app = Flask(__name__)
 #SET UP Google Credential
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
 
-tracemalloc.start()
 
 # debugging route to check the server works
 @app.route('/')
