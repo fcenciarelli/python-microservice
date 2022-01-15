@@ -23,7 +23,7 @@ from threading import Thread
 import gc
 import sys
 import multiprocessing
-from scalene import scalene_profiler
+import tracemalloc
 
 
 
