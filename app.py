@@ -1,6 +1,6 @@
 
 
-# Importing the libraries
+# Importing the libraries used
 
 from __future__ import print_function
 from flask import Flask, jsonify, request
@@ -28,13 +28,14 @@ import sys
 # Declearing that the app is using Flask
 app = Flask(__name__)
 
+#SET UP Google Credential
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'google-credentials.json'
-#CHANGED THE VARIABLE
 
-  
+
+# debugging route to check the server works
 @app.route('/')
 def home():
-    return "We are onlinee"
+    return "We are online"
 
 
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
@@ -46,11 +47,8 @@ def getdata():
     print(request.get_json())  #the request is sent through json format where the link is stored
     url = json.dumps(request.get_json()).split('"')[3]
 
-    video_id = url.split("v=")[1]
-    srt = retrieve_transcripts_youtube(video_id)
-    print(srt)
-    
-    thread_a = VideoMaking(request.__copy__())
+    # The thread containing the functions to translate the video is executed in background
+    thread_a = VideoMaking(request.__copy__()) # Passing the POST req to it
     thread_a.start()
 
     return Response(status=201)
@@ -66,10 +64,10 @@ class VideoMaking(Thread):
         url = json.dumps(self.request.get_json()).split('"')[3]
         video_id = url.split("v=")[1]
         print(video_id)
-        srt = retrieve_transcripts_youtube(video_id)
-        print(srt)
-        fulltext = make_the_video(srt, video_id)
-        gc.collect()
+        srt = retrieve_transcripts_youtube(video_id) #Obtain subtitles from youtube
+        print(srt) # For debugging
+        fulltext = make_the_video(srt, video_id) # Translate the subtitles
+        gc.collect() # clean memory
         sys.exit()
         return
 
@@ -77,8 +75,9 @@ class VideoMaking(Thread):
 #function to get the transcript from yotube taking in the youtube id (letters and numbers after watch?v= in the youtube link)
 def retrieve_transcripts_youtube(video_id):
     print(video_id)
+    # If YTtranscript API stops working send error message
     try:
-        srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
+        srt = YouTubeTranscriptApi.get_transcript(video_id, languages=['en']) 
     except TooManyRequests:
         print("Too many requests")
         srt = [{'text': 'this is where you come and punish', 'start': 0.0, 'duration': 3.99}, {'text': 'yourself for fun a rather for your', 'start': 1.68, 'duration': 4.52}, {'text': 'health', 'start': 3.99, 'duration': 2.21}, {'text': 'here you get rubbed down shaken up', 'start': 7.88, 'duration': 4.27}, {'text': 'crumbled and pushed around for a price', 'start': 10.38, 'duration': 4.049}, {'text': 'and a purpose if you want to turn fat', 'start': 12.15, 'duration': 5.219}, {'text': "and fled into nice hard muscle there's", 'start': 14.429, 'duration': 4.081}, {'text': 'central heating and wall-to-wall', 'start': 17.369, 'duration': 3.481}, {'text': 'carpeting to soften the blows and all', 'start': 18.51, 'duration': 4.679}, {'text': 'kinds of mechanical wonders to waste the', 'start': 20.85, 'duration': 5.089}, {'text': 'way your waste', 'start': 23.189, 'duration': 2.75}, {'text': 'once you join the club you can get down', 'start': 36.5, 'duration': 3.78}, {'text': 'to a workout when you like for as long', 'start': 38.63, 'duration': 3.75}]
@@ -215,10 +214,11 @@ def make_the_video(srt, video_id):
 
     return fulltext
 
+#Upload final result to Google Cloud
 def upload_to_bucket(bucket_name, video_id):
     try:
-        storage_client = storage.Client()
-        blob_name = "/tmp/" + video_id + ".mp4"
+        storage_client = storage.Client() # Enstablish connection
+        blob_name = "/tmp/" + video_id + ".mp4" #Name the video with the video_id
         bucket = storage_client.get_bucket(bucket_name)
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(blob_name)
@@ -229,8 +229,10 @@ def upload_to_bucket(bucket_name, video_id):
         print(e)
         return False
 
+#Closing and deleting VideoClips to avoid memory leaks
 def close_clip(clip):
   try:
+    clip.close()
     clip.reader.close()
     if clip.audio != None:
       clip.audio.reader.close_proc()
@@ -244,8 +246,6 @@ def close_clip(clip):
 
 #main function executed when the program starts
 if __name__ == '__main__':
-    #you can execute all the functions written here
-    #transcript_analysis_from_sentence()
     app.run()
 
 
