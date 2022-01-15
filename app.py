@@ -61,29 +61,12 @@ def getdata():
     if video_id== "RwQnRWTWcVE" or video_id== "SCkc2cEHrGk" or video_id== "mophXhMJguw":
         return Response(status=201)
     
-    
-#     p = multiprocessing.Process(target=worker, args=(request,))
-#     jobs.append(p)
-#     p.start()
-    
 
     # The thread containing the functions to translate the video is executed in background
     thread_a = VideoMaking(request.__copy__()) # Passing the POST req to it
     thread_a.start()
 
     return Response(status=201)
-
-
-def worker(request):
-    url = json.dumps(self.request.get_json()).split('"')[3]
-    video_id = url.split("v=")[1]
-    print(video_id)
-    srt = retrieve_transcripts_youtube(video_id) #Obtain subtitles from youtube
-    print(srt) # For debugging
-    fulltext = make_the_video(srt, video_id) # Translate the subtitles
-    gc.collect() # clean memory
-    return
-
 
 
 class VideoMaking(Thread):
@@ -93,7 +76,6 @@ class VideoMaking(Thread):
         self.request = request
 
     def run(self):
-        scalene_profiler.start()
         url = json.dumps(self.request.get_json()).split('"')[3]
         video_id = url.split("v=")[1]
         
@@ -103,7 +85,6 @@ class VideoMaking(Thread):
         fulltext = make_the_video(srt, video_id) # Translate the subtitles
         gc.collect() # clean memory
         sys.exit()
-        scalene_profiler.stop()
         return
 
 
