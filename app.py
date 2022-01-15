@@ -47,7 +47,7 @@ def getdata():
     video_id = url.split("v=")[1]
     
     #Making a list of videos already in the Database
-    if video_id= "RwQnRWTWcVE" or video_id= "SCkc2cEHrGk" or video_id= "mophXhMJguw":
+    if video_id== "RwQnRWTWcVE" or video_id== "SCkc2cEHrGk" or video_id== "mophXhMJguw":
         return Response(status=201)
 
     # The thread containing the functions to translate the video is executed in background
