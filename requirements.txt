@@ -23,6 +23,6 @@ Werkzeug==1.0.1
 chardet==1.0.1
 ffmpeg-python==0.2.0
 pytest==6.2.5
-
+multiprocess=0.70.12.2
 
 
