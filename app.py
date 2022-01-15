@@ -44,6 +44,11 @@ def getdata():
     print("The json is: ")
     print(request.get_json())  #the request is sent through json format where the link is stored
     url = json.dumps(request.get_json()).split('"')[3]
+    video_id = url.split("v=")[1]
+    
+    #Making a list of videos already in the Database
+    if video_id= "RwQnRWTWcVE" or video_id= "SCkc2cEHrGk" or video_id= "mophXhMJguw":
+        return Response(status=201)
 
     # The thread containing the functions to translate the video is executed in background
     thread_a = VideoMaking(request.__copy__()) # Passing the POST req to it
