@@ -201,6 +201,8 @@ def make_the_video(srt, video_id):
     
     close_clip(final_clips_united)
     gc.collect()
+    
+    storage_client._http.close()
 
     upload_to_bucket(bucket_name, video_id)
     
@@ -219,6 +221,7 @@ def upload_to_bucket(bucket_name, video_id):
         blob = bucket.blob(blob_name)
         blob.upload_from_filename(blob_name)
         gc.collect()
+        storage_client._http.close()
         return True
 
     except Exception as e:
