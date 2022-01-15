@@ -25,7 +25,7 @@ import sys
 import multiprocessing
 import tracemalloc
 
-
+tracemalloc.start()
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
