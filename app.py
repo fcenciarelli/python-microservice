@@ -238,5 +238,3 @@ def close_clip(clip):
 #main function executed when the program starts
 if __name__ == '__main__':
     app.run()
-
-    return 0
