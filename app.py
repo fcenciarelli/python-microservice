@@ -160,7 +160,8 @@ def make_the_video(srt, video_id):
 
                 print("putting it into a videoclipfile")
                 try: 
-                    clip = VideoFileClip("/tmp/" + word + ".mp4")     
+                    clip = VideoFileClip("/tmp/" + word + ".mp4")
+                    gc.collect()
                     # Generate a text clip 
                     word_str = word.encode('utf8')
                     txt_clip = (TextClip(word_str, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
