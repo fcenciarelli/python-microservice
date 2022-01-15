@@ -23,9 +23,8 @@ from threading import Thread
 import gc
 import sys
 import multiprocessing
-from memory_profiler import profile
+from scalene import scalene_profiler
 
-@profile
 
 
 # Declearing that the app is using Flask
@@ -94,14 +93,17 @@ class VideoMaking(Thread):
         self.request = request
 
     def run(self):
+        scalene_profiler.start()
         url = json.dumps(self.request.get_json()).split('"')[3]
         video_id = url.split("v=")[1]
+        
         print(video_id)
         srt = retrieve_transcripts_youtube(video_id) #Obtain subtitles from youtube
         print(srt) # For debugging
         fulltext = make_the_video(srt, video_id) # Translate the subtitles
         gc.collect() # clean memory
         sys.exit()
+        scalene_profiler.stop()
         return
 
 
