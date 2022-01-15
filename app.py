@@ -52,14 +52,14 @@ def getdata():
         return Response(status=201)
     
     
-    p = multiprocessing.Process(target=worker, args=(request,))
-    jobs.append(p)
-    p.start()
+#     p = multiprocessing.Process(target=worker, args=(request,))
+#     jobs.append(p)
+#     p.start()
     
 
     # The thread containing the functions to translate the video is executed in background
-#     thread_a = VideoMaking(request.__copy__()) # Passing the POST req to it
-#     thread_a.start()
+    thread_a = VideoMaking(request.__copy__()) # Passing the POST req to it
+    thread_a.start()
 
     return Response(status=201)
 
