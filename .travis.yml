@@ -8,6 +8,6 @@ install:
 language: python
 python: 
   - 3.9
-script: pytest
+script: python test_unittest.py
 
 
