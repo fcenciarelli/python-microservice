@@ -22,10 +22,7 @@ from google.cloud import storage
 from threading import Thread
 import gc
 import sys
-import multiprocessing
-import tracemalloc
 
-tracemalloc.start()
 
 # Declearing that the app is using Flask
 app = Flask(__name__)
@@ -43,13 +40,6 @@ def home():
 # IMPORTANT This function gets the url of the video from java via a HTTP request with POST method
 @app.route('/download', methods=['POST'])  #sending a post request to '/' the function getdata is called
 def getdata():
-    lines = []
-    snapshot = tracemalloc.take_snapshot()
-    for stat in snapshot.statistics("lineno"):
-        lines.append(str(stat))
-    return "\n".join(lines)
-    
-    
     print("The header is: ")
     print(request.headers)  #this is just to see the details of the request
     print("The json is: ")
@@ -163,13 +153,14 @@ def make_the_video(srt, video_id):
 
                 # Download signed video from GCS
                 word_video = getbucket.get_blob(filename)
+                gc.collect()
                 word_video.download_to_filename("/tmp/" + word + ".mp4")
                 
                 gc.collect()
 
                 print("putting it into a videoclipfile")
                 try: 
-                    clip = VideoFileClip("/tmp/" + word + ".mp4")
+                    clip = VideoFileClip("/tmp/" + word + ".mp4")     
                     # Generate a text clip 
                     word_str = word.encode('utf8')
                     txt_clip = (TextClip(word_str, fontsize = 70, color = 'white').set_position('center')).set_duration(clip.duration) 
